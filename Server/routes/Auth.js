@@ -3,7 +3,9 @@ const con = require('../db');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const mysql = require('mysql2');
+const jwt = require("jsonwebtoken")
 
+const secretKey = 'PROCESS.env.JWT_SECRET';
 router.post('/register', (req, res) => {
     const { username, email, password } = req.body;
 
@@ -71,7 +73,19 @@ router.post('/login', (req, res) => {
         } catch (error) {
             console.error('Error comparing passwords:', error);
             res.status(500).json({ error: 'Server error' });
-        }
+      }
+      const token = jwt.sign(
+        {
+          id: user.id,
+          email: user.email,
+          username: user.username
+        },
+        secretKey,
+        { expiresIn: '1h' } // Token expires in 1 hour
+      );
+      res.status(200).cookie('access_token', token, {
+        httpOnly: true
+      }).json("user")
     });
 })
 
