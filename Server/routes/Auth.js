@@ -48,45 +48,49 @@ router.get('/test', (req, res) => {
     res.send('Server working');  
 })
 
-router.post('/login', (req, res) => { 
+router.post('/login', (req, res) => {  
     const { email, password } = req.body;
-    
-    if (!email ||!password) {
+
+    // Validate input
+    if (!email || !password) {
         return res.status(400).json({ message: 'All fields are required' });
     }
+
     const sql = 'SELECT * FROM users WHERE email = ?';  
     con.query(sql, [email], async (err, result) => {
         if (err || result.length === 0) {
             return res.status(404).json({ error: 'Invalid credentials' });
         }
-        
+
         try {
             const user = result[0];
             const match = await bcrypt.compare(password, user.password);
+
             if (match) {
-                res.json({ message: `You have logged in successfully` });
+                // Generate JWT token
+                const token = jwt.sign(
+                    {
+                        id: user.id,
+                        email: user.email,
+                        username: user.username
+                    },
+                    secretKey,
+                    { expiresIn: '1h' } // Token expires in 1 hour
+                );
+
+                // Set the cookie and send response
+                return res.status(200).cookie('access_token', token, {
+                    httpOnly: true
+                }).json({ message: "User authenticated successfully" });
             } else {
-                res.status(404).json({ error: 'Invalid credentials' });
-          }
-          console.log('Password received:', req.body.password); // Log password received from the frontend
+                return res.status(404).json({ error: 'Invalid credentials' });
+            }
 
         } catch (error) {
             console.error('Error comparing passwords:', error);
-            res.status(500).json({ error: 'Server error' });
-      }
-      const token = jwt.sign(
-        {
-          id: user.id,
-          email: user.email,
-          username: user.username
-        },
-        secretKey,
-        { expiresIn: '1h' } // Token expires in 1 hour
-      );
-      res.status(200).cookie('access_token', token, {
-        httpOnly: true
-      }).json("user")
+            return res.status(500).json({ error: 'Server error' });
+        }
     });
-})
+});
 
 module.exports = router;
