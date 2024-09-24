@@ -81,7 +81,7 @@ router.post('/login', (req, res) => {
                 // Set the cookie and send response
                 return res.status(200).cookie('access_token', token, {
                     httpOnly: true
-                }).json({ message: "User authenticated successfully" });
+                }).json({ id: user.id,email: user.email});
             } else {
                 return res.status(404).json({ error: 'Invalid credentials' });
             }
