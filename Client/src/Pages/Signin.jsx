@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { SigninFailure, SigninSuccess, SiginStart } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
+import Oaoth from "../Oaoth";
 
 const Signin = () => {
   const [email, setemail] = useState("");
@@ -99,6 +100,7 @@ const Signin = () => {
               >
                 Log in
               </button>
+              <Oaoth/>
               <Link to="/register" className="text-decoration-none">
                 Don't have an account? Sign up
               </Link>

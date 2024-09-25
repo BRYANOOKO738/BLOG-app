@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../Components/Navbar/Navbar.css";
 import { Link, useNavigate } from "react-router-dom";
+import Oaoth from "../Oaoth";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -108,6 +109,7 @@ const Signup = () => {
             <button className="btn btn-primary mt-2" type="submit">
               Register
             </button>
+            <Oaoth/>
             <Link to="/Login" className="text-decoration-none">
               Already have an account? Sign in
             </Link>
