@@ -2,16 +2,20 @@ import React, { useState } from "react";
 import "../Components/Navbar/Navbar.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { SigninFailure, SigninSuccess, SiginStart } from "../redux/user/userSlice";
+import { useDispatch } from "react-redux";
 
 const Signin = () => {
   const [email, setemail] = useState("");
   const [password, setPassword] = useState(""); // Corrected to lowercase
   const [error, setError] = useState("");
+  const dispatch = useDispatch();
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch(SiginStart()); // Corrected typo
     fetch("http://localhost:3000/routes/Auth/login", {
       method: "POST",
       headers: {
@@ -29,8 +33,8 @@ const Signin = () => {
         }
       })
       .then((data) => {
-        setSuccessMessage(`Login successful! Welcome, ${email}`); // Corrected message
-        setError("");
+        dispatch(SigninSuccess(data))
+        dispatch(SigninFailure(data.Error));
         navigate("/");
       })
       .catch((error) => {
