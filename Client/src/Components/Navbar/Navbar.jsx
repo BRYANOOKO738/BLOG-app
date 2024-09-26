@@ -3,12 +3,15 @@ import { Link, Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 // import AvatarDropdown from "../AvatarDropdown";
+import { toggleTheme } from "../../redux/Theme/themeSlice";
 
 const Navbar = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
+  const { theme } = useSelector((state) => state.theme);
+  
   const toggleSearchBar = () => {
     setIsExpanded(!isExpanded);
   };
@@ -52,9 +55,14 @@ const Navbar = () => {
             >
               <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <a className="nav-link active" aria-current="page" href="#">
+                  <Link
+                    to="/"
+                    className="nav-link active"
+                    aria-current="page"
+                    href="#"
+                  >
                     Home
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link active" aria-current="page" href="#">
@@ -67,8 +75,15 @@ const Navbar = () => {
                   </a>
                 </li>
                 <li className="nav-item">
-                  <div className="border rounded mx-4">
-                    <i className="bi bi-moon-fill fs-3"></i>
+                  <div
+                    className="border rounded mx-4"
+                    onClick={() => dispatch(toggleTheme())}
+                  >
+                    {theme === "light" ? (
+                      <i className="bi bi-brightness-high-fill"></i>
+                    ) : (
+                      <i className="bi bi-moon-fill fs-3"></i>
+                    )}
                   </div>
                 </li>
                 {currentUser ? (
