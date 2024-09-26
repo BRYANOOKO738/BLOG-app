@@ -93,4 +93,115 @@ router.post('/login', (req, res) => {
     });
 });
 
+
+
+router.post('/google', async (req, res) => {
+  const { name, email, image } = req.body;
+
+  // Default photo if not provided
+  const defaultPhotoURL = 'https://www.pngkit.com/png/full/281-2812821_user-account-management-logo-user-icon-png.png'; // Replace with actual URL
+  const userPhotoURL = image || defaultPhotoURL;
+
+  try {
+    // Step 1: Check if the user already exists in the database
+    const sqlCheckUser = 'SELECT * FROM users WHERE email = ?';
+    
+    con.query(sqlCheckUser, [email], async (err, result) => {
+      if (err) {
+        console.error('Error while checking for user:', err);
+        return res.status(500).json({ error: 'Server error' });
+      }
+
+      if (result.length === 0) {
+        // Step 2: User does not exist, create a new one
+        // Generate a random password
+        const generatedPassword = Math.random().toString(36).slice(-8); // Generate an 8-character random password
+
+        // Hash the password using bcrypt
+        const hashedPassword = await bcrypt.hash(generatedPassword, 10);
+
+        const sqlInsertUser = `
+          INSERT INTO users (username, email, image, password)
+          VALUES (?, ?, ?, ?)
+        `;
+
+        con.query(sqlInsertUser, [name, email, userPhotoURL, hashedPassword], (err, result) => {
+          if (err) {
+            console.error('Error while inserting new user:', err);
+            return res.status(500).json({ error: 'Server error' });
+          }
+
+          // Create a user object
+          const user = {
+            id: result.insertId,
+            username: name,
+            email: email,
+            image: userPhotoURL
+          };
+
+          // Generate JWT token
+          const token = jwt.sign(
+            {
+              id: user.id,
+              email: user.email,
+              username: user.username
+            },
+            secretKey,
+            { expiresIn: '1h' }
+          );
+
+          // Send response with token and user data
+          return res.status(201).json({
+            message: 'User created successfully',
+            user: user,
+            token: token
+          });
+        });
+      } else {
+        // Step 3: User already exists, update user information
+        const sqlUpdateUser = `
+          UPDATE users 
+          SET username = ?, image = ? 
+          WHERE email = ?
+        `;
+
+        con.query(sqlUpdateUser, [name, userPhotoURL, email], (err, result) => {
+          if (err) {
+            console.error('Error while updating user:', err);
+            return res.status(500).json({ error: 'Server error' });
+          }
+
+          const user = {
+            id: result.affectedRows > 0 ? result.insertId : result[0]?.id, // Fallback to original user ID in case of update
+            username: name,
+            email: email,
+            image: userPhotoURL
+          };
+
+          // Generate JWT token
+          const token = jwt.sign(
+            {
+              id: user.id,
+              email: user.email,
+              username: user.username
+            },
+            secretKey,
+            { expiresIn: '1h' }
+          );
+
+          return res.status(200).json({
+            message: 'User updated successfully',
+            token: token,
+            user: user
+          });
+        });
+      }
+    });
+  } catch (error) {
+    console.error('Unexpected error:', error);
+    return res.status(500).json({ error: 'Unexpected server error' });
+  }
+});
+
+
 module.exports = router;
