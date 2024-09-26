@@ -1,18 +1,27 @@
 import React, { useState } from "react";
-import { Outlet } from "react-router-dom";
-import "./Navbar.css";
+import { Link, Outlet } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+// import AvatarDropdown from "../AvatarDropdown";
 
 const Navbar = () => {
-   const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  
+  const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.user);
+  const toggleSearchBar = () => {
+    setIsExpanded(!isExpanded);
+  };
 
-   const toggleSearchBar = () => {
-     setIsExpanded(!isExpanded);
-   };
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" });
+  };
+
   return (
     <div>
-      <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand border rounded-pill p-2 logo" href="#">
+      <nav className="navbar navbar-expand-lg bg-body-tertiary">
+        <div className="container-fluid">
+          <a className="navbar-brand border rounded-pill p-2 logo" href="#">
             UNBOUND VOICES
           </a>
           <div className="mx-auto d-flex">
@@ -37,38 +46,91 @@ const Navbar = () => {
               />
               <i className="bi bi-search" onClick={toggleSearchBar}></i>
             </form>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#">
+            <div
+              className="collapse navbar-collapse"
+              id="navbarSupportedContent"
+            >
+              <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
+                <li className="nav-item">
+                  <a className="nav-link active" aria-current="page" href="#">
                     Home
                   </a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#">
+                <li className="nav-item">
+                  <a className="nav-link active" aria-current="page" href="#">
                     About
                   </a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#">
+                <li className="nav-item">
+                  <a className="nav-link active" aria-current="page" href="#">
                     Contact
                   </a>
                 </li>
-                <li class="nav-item">
-                  <div class="border rounded mx-4">
-                    <i class="bi bi-moon-fill fs-3"></i>
+                <li className="nav-item">
+                  <div className="border rounded mx-4">
+                    <i className="bi bi-moon-fill fs-3"></i>
                   </div>
                 </li>
-                <li class="nav-item">
-                  <button type="button" class="btn btn-success">
+                {currentUser ? (
+                  <div className="dropdown">
+                    <button
+                      className="btn btn-secondary dropdown-toggle p-0"
+                      type="button"
+                      id="dropdownAvatarButton"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                      style={{ background: "transparent", border: "none" }}
+                    >
+                      <img
+                        src={currentUser.image} // Your avatar image
+                        alt="User Avatar"
+                        className="rounded-circle"
+                        style={{ width: "40px", height: "40px" }} // Set the size of the avatar
+                      />
+                    </button>
+                    <ul
+                      className="dropdown-menu m-3"
+                      aria-labelledby="dropdownAvatarButton"
+                    >
+                      <li>
+                        <div className="text-danger dropdown-item">
+                          @{currentUser.username}
+                        </div>
+                      </li>
+                      <li>
+                        <span className="dropdown-item text-truncate">
+                          {currentUser.email}
+                        </span>
+                      </li>
+                      <hr />
+                      <li>
+                        <Link
+                          to="/dashboard"
+                          className="text-decoration-none text-dark  dropdown-item"
+                        >
+                          <div>Profile</div>
+                        </Link>
+                      </li>
+                      <li>
+                        <hr className="dropdown-divider" />
+                      </li>
+                      <li>
+                        <a className="dropdown-item" href="#/logout">
+                          Logout
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                ) : (
+                  <Link to="/Login" type="button" className="btn btn-success">
                     Sign in
-                  </button>
-                </li>
+                  </Link>
+                )}
               </ul>
             </div>
           </div>
           <button
-            class="navbar-toggler"
+            className="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent"
@@ -77,7 +139,7 @@ const Navbar = () => {
             aria-label="Toggle navigation"
           >
             <span className="navbar-toggler-icon"></span>
-          </button>          
+          </button>
         </div>
       </nav>
       <Outlet />

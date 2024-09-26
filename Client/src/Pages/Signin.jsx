@@ -2,13 +2,17 @@ import React, { useState } from "react";
 import "../Components/Navbar/Navbar.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { SigninFailure, SigninSuccess, SiginStart } from "../redux/user/userSlice";
+import {
+  SigninFailure,
+  SigninSuccess,
+  signinStart,
+} from "../redux/user/userSlice"; // Updated action name
 import { useDispatch } from "react-redux";
 import Oaoth from "../Oaoth";
 
 const Signin = () => {
   const [email, setemail] = useState("");
-  const [password, setPassword] = useState(""); // Corrected to lowercase
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const [successMessage, setSuccessMessage] = useState("");
@@ -16,13 +20,13 @@ const Signin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(SiginStart()); // Corrected typo
+    dispatch(signinStart()); // Corrected typo
     fetch("http://localhost:3000/routes/Auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password }), // Corrected to lowercase
+      body: JSON.stringify({ email, password }),
     })
       .then((res) => {
         if (res.ok) {
@@ -34,13 +38,14 @@ const Signin = () => {
         }
       })
       .then((data) => {
-        dispatch(SigninSuccess(data))
-        dispatch(SigninFailure(data.Error));
+        dispatch(SigninSuccess(data));
+        setSuccessMessage("Login successful");
         navigate("/");
       })
       .catch((error) => {
         setError(error.message);
         setSuccessMessage("");
+        dispatch(SigninFailure(error.message)); // Updated to send the correct error message
       });
   };
 
@@ -53,7 +58,7 @@ const Signin = () => {
         >
           <Link
             className="navbar-brand border rounded-pill p-2 logo text-center d-flex  align-items-center  justify-content-center"
-            to="#" // Corrected from href to to
+            to="#"
           >
             UNBOUND VOICES
           </Link>
@@ -87,8 +92,8 @@ const Signin = () => {
                 placeholder="Enter Password"
                 style={{ width: "300px" }}
                 className="form-control"
-                value={password} // Corrected to lowercase
-                onChange={(e) => setPassword(e.target.value)} // Corrected to lowercase
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
@@ -100,7 +105,7 @@ const Signin = () => {
               >
                 Log in
               </button>
-              <Oaoth/>
+              <Oaoth />
               <Link to="/register" className="text-decoration-none">
                 Don't have an account? Sign up
               </Link>

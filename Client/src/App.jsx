@@ -22,6 +22,7 @@ function App() {
           <Route path="/contact" element={<Dashbord />} />
           <Route path="/register" element={<Signup />} />
           <Route path="/Login" element={<Signin />} />
+          <Route path="/dashboard" element={<Dashbord />} />
         </Route>
       </Routes>
       <Footer />
