@@ -10,6 +10,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import Signup from "./Pages/Signup";
 import Signin from "./Pages/Signin";
 import Footer from "./Components/Footer/Footer";
+import Private from "./Components/Private";
 
 
 function App() {
@@ -22,7 +23,9 @@ function App() {
           <Route path="/contact" element={<Dashbord />} />
           <Route path="/register" element={<Signup />} />
           <Route path="/Login" element={<Signin />} />
+          <Route element={<Private/>}>            
           <Route path="/dashboard" element={<Dashbord />} />
+          </Route>
         </Route>
       </Routes>
       <Footer />

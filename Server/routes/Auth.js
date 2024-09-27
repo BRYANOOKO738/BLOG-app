@@ -144,7 +144,9 @@ router.post('/google', async (req, res) => {
             {
               id: user.id,
               email: user.email,
-              username: user.username
+              username: user.username,
+              image:user.image
+
             },
             secretKey,
             { expiresIn: '1h' }
@@ -153,7 +155,7 @@ router.post('/google', async (req, res) => {
           // Send response with token and user data
           return res.status(201).json({
             message: 'User created successfully',
-            user: user,
+            id: user.id,email: user.email,username: user.username,image: user.image,
             token: token
           });
         });
@@ -192,7 +194,7 @@ router.post('/google', async (req, res) => {
           return res.status(200).json({
             message: 'User updated successfully',
             token: token,
-            user: user
+            id: user.id,email: user.email,username: user.username,image: user.image,
           });
         });
       }

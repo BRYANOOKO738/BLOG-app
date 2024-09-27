@@ -2,46 +2,22 @@
       background: linear-gradient(to right, #663399, #e76ad2,#2f0fe6);
       color: white;
 }
-/* General styles */
-.search-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
 
-/* Rounded pill search bar for large screens */
-.search-input {
-  width: 100%;
-  max-width: 400px;
-  padding: 10px 20px;
-  border-radius: 50px;
-  border: 1px solid #ccc;
-  transition: width 0.3s ease, visibility 0.3s ease;
-}
-
-.search-icon {
-  font-size: 20px;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-/* Small screens: Hide the search input by default */
 @media (max-width: 768px) {
-  .search-input {
-    width: 0;
-    padding: 0;
-    border: none;
-    visibility: hidden;
-  }
-  #SEARCH{
-      float: left;
+  .sidebar {
+    background-color:#5b71f0 ;
+    color: white;
+    backdrop-filter: blur(10px);
   }
 
-  .search-container.expanded .search-input {
-    width: 150px;
-    padding: 8px;
-    visibility: visible;
-    border: 1px solid #ccc;
+  .search-container input {
+    display: none; /* Hide input by default */
+  }
+
+  .search-container.expanded input {
+    display: block; /* Show input when expanded */
   }
 }
+
+
+
