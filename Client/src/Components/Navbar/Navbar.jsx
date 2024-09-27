@@ -175,7 +175,7 @@ const Navbar = () => {
                           <hr />
                           <li>
                             <Link
-                              to="/dashboard"
+                              to="/dashboard?tab=dashboard"
                               className="text-decoration-none text-dark dropdown-item"
                             >
                               <div>Profile</div>

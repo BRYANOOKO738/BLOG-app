@@ -1,29 +1,40 @@
 import React from 'react'
+import { useSelector } from "react-redux";
 
 const Footer = () => {
+  const { theme } = useSelector((state) => state.theme);
   return (
-    <div style={{ backgroundColor: "#050819", color: "white" }}>
+    <div
+      style={{
+        
+        color: "white",
+        position: "relative",
+      }}
+      className={`sidebar ${
+        theme === "dark" ? "bg-dark text-white" : "bg-light text-dark"
+      }`}
+    >
       <div className="row">
         <div className="col text-decoration-none">
           <h3>About</h3>
           <ul>
             <li>
-              <a href="#" className="text-decoration-none text-white">
+              <a href="#" className="text-decoration-none ">
                 Press
               </a>
             </li>
             <li>
-              <a href="#" className="text-decoration-none text-white">
+              <a href="#" className="text-decoration-none ">
                 Careers
               </a>
             </li>
             <li>
-              <a href="#" className="text-decoration-none text-white">
+              <a href="#" className="text-decoration-none ">
                 Terms of Service
               </a>
             </li>
             <li>
-              <a href="#" className="text-decoration-none text-white">
+              <a href="#" className="text-decoration-none ">
                 Privacy Policy
               </a>
             </li>
@@ -46,27 +57,27 @@ const Footer = () => {
           <h3>Categories</h3>
           <ul>
             <li>
-              <a href="#" className="text-decoration-none text-white">
+              <a href="#" className="text-decoration-none ">
                 Technology
               </a>
             </li>
             <li>
-              <a href="#" className="text-decoration-none text-white">
+              <a href="#" className="text-decoration-none ">
                 Business
               </a>
             </li>
             <li>
-              <a href="#" className="text-decoration-none text-white">
+              <a href="#" className="text-decoration-none ">
                 Sports
               </a>
             </li>
             <li>
-              <a href="#" className="text-decoration-none text-white">
+              <a href="#" className="text-decoration-none ">
                 World
               </a>
             </li>
             <li>
-              <a href="#" className="text-decoration-none text-white">
+              <a href="#" className="text-decoration-none ">
                 Entertainment
               </a>
             </li>

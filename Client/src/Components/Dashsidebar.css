@@ -1,0 +1,6 @@
+
+@media (max-width: 576px) {
+  .sidebar {
+    height: auto; /* Let it adjust based on the items inside */
+  }
+}
