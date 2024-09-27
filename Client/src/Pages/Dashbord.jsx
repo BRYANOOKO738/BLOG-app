@@ -4,6 +4,7 @@ import DashProfile from '../Components/DashProfile'
 import DashSidebar from '../Components/DashSidebar'
 
 
+
 const Dashbord = () => {
   const location = useLocation()
   const [tab, setTab] = useState("")
@@ -17,11 +18,19 @@ const Dashbord = () => {
   },[location.search])
   
   return (
-    <div className="d-flex flex-column flex-md-row mb-2" style={{ height: "100vh" }}>
-      <div>
+    <div
+      className="d-flex flex-column flex-md-row mb-2"
+      style={{ height: "100vh" }}
+    >
+      <div style={{ width: "250px" }}>
         <DashSidebar />
       </div>
-      <DashProfile />
+      <div
+        className="d-flex justify-content-center align-items-center dash-profile-container"
+        style={{ flex: 1, transform: "translateY(-20px)" }} // Adjust the value to suit your needs
+      >
+        <DashProfile />
+      </div>
     </div>
   );
 }

@@ -1,0 +1,12 @@
+.centered-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full height of the viewport */
+}
+@media (min-width: 768px) {
+  .dash-profile-container {
+    justify-content: center; /* Centers content vertically */
+  }
+}
