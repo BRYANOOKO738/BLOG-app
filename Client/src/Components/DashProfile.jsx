@@ -9,6 +9,9 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../Firebase";
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+
 
 const DashProfile = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -18,6 +21,20 @@ const DashProfile = () => {
   const [uploadProgress, setUploadProgress] = useState(null);
   const [uploadError, setUploadError] = useState(null);
   const filePickerRef = useRef();
+  const [showAlert, setShowAlert] = useState(false);
+
+  useEffect(() => {
+    if (uploadError) {
+      setShowAlert(true);
+      // Set a timeout to hide the alert after 3 seconds
+      const timer = setTimeout(() => {
+        setShowAlert(false);
+      }, 3000); // 3 seconds
+
+      // Clean up the timer if the component unmounts
+      return () => clearTimeout(timer);
+    }
+  }, [uploadError]);
 
   // Handle image file change
   const handleImageChange = (event) => {
@@ -51,6 +68,8 @@ const DashProfile = () => {
       },
       (error) => {
         setUploadError("Failed to upload (image must be below 2MB)");
+        setImageFile(null);
+        setImageFileURL(null);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -87,15 +106,73 @@ const DashProfile = () => {
           ref={filePickerRef}
           className="d-none"
         />
-        <img
-          src={imageFileURL || currentUser.image}
-          alt="user img"
+        <div
           className="rounded-circle"
-          style={{ width: "100%" }}
-          onClick={() => filePickerRef.current.click()}
-        />
-        {uploadProgress && <p>{`Uploading... ${uploadProgress}%`}</p>}
-        {uploadError && <p className="text-danger">{uploadError}</p>}
+          style={{
+            position: "relative", // Positioning for overlay
+            width: "100px",
+            height: "100px",
+            overflow: "hidden",
+            borderRadius: "50%",
+          }}
+        >
+          {/* Display CircularProgressbar if uploadProgress exists */}
+          {uploadProgress && (
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: 1, // Ensure it's on top of the image
+              }}
+            >
+              <CircularProgressbar
+                value={uploadProgress || 0}
+                text={`${uploadProgress}%`}
+                strokeWidth={5} // Correct strokeWidth usage
+                styles={{
+                  // Dynamically adjust the path opacity based on uploadProgress
+                  path: {
+                    stroke: `rgba(62, 152, 199, ${uploadProgress / 100})`, // Vary opacity
+                  },
+                  text: {
+                    fill: "#f88",
+                    fontSize: "20px",
+                  },
+                }}
+              />
+            </div>
+          )}
+
+          {/* Image */}
+          <img
+            src={imageFileURL || currentUser.image}
+            alt="user img"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              cursor: "pointer",
+            }}
+            onClick={() => filePickerRef.current.click()}
+          />
+        </div>
+
+        {/* {uploadProgress && <p>{`Uploading... ${uploadProgress}%`}</p>} */}
+        {/* {uploadError && <p className="text-danger">{uploadError}</p>} */}
+        <div>
+          {/* Alert message */}
+          {showAlert && (
+            <div className="alert alert-danger fade show alert-dismissible">
+              <strong>{uploadError}</strong>
+            </div>
+          )}
+        </div>
       </div>
       <form>
         <div className="mb-3">
