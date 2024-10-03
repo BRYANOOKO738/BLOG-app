@@ -96,4 +96,12 @@ router.delete("/delete/:id", verifyToken, (req, res) => {
     });
 });
 
+router.post("/Signout", () => {
+    try {
+        res.clearCookie("access_token").status(200).json("User Signout successfully")
+    } catch (error) {
+        console.error('Error signing out user:', error);
+    }
+})
+
 module.exports = router;

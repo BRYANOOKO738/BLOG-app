@@ -3,11 +3,14 @@ import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./Dashsidebar.css";
 import { useSelector } from "react-redux";
+import { SignoutSuccess } from "../redux/user/userSlice";
+import { useDispatch } from "react-redux";
 
 
 const DashSidebar = () => {
   const location = useLocation();
   const [tab, setTab] = useState("");
+  const dispatch = useDispatch();
   useEffect(() => {
     const urlparams = new URLSearchParams(location.search);
     const tabFromUrl = urlparams.get("tab");
@@ -15,7 +18,31 @@ const DashSidebar = () => {
       setTab(tabFromUrl);
     }
   }, [location.search]);
-    const { theme } = useSelector((state) => state.theme);
+  const { theme } = useSelector((state) => state.theme);
+  const handleSignout = async () => {
+    try {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("user");
+      dispatch(SignoutSuccess());
+      const res = await fetch(
+        "http://localhost:3000/routes/updateuser/Signout",
+        {
+          method: "POST",
+        }
+      );
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Failed to sign out");
+      }
+      navigate("/Login");
+
+      console.log("Signed out successfully");
+    } catch (error) {
+      console.error("Sign-out error:", error.message);
+      dispatch(signoutFailure(error.message));
+    }
+  };
   return (
     <div
       className={`sidebar ${
@@ -41,7 +68,7 @@ const DashSidebar = () => {
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/logout" className="nav-link">
+          <Link  className="nav-link" onClick={handleSignout}>
             <i className="bi bi-box-arrow-right"></i> Sign Out
           </Link>
         </li>

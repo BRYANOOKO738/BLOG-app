@@ -3,6 +3,9 @@ import { Link, Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../../redux/Theme/themeSlice";
 import { useParams } from "react-router-dom";
+import {  
+  SignoutSuccess,
+} from "../../redux/user/userSlice";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -18,6 +21,31 @@ const Navbar = () => {
   };
 
   const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
+  const handleSignout = async () => {
+    try {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("user");
+      dispatch(SignoutSuccess());
+      const res = await fetch(
+        "http://localhost:3000/routes/updateuser/Signout",
+        {
+          method: "POST",
+        }
+      );
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Failed to sign out");
+      }
+      navigate("/Login");
+
+      console.log("Signed out successfully");
+    } catch (error) {
+      console.error("Sign-out error:", error.message);
+      dispatch(signoutFailure(error.message));
+    }
+  };
+
   return (
     <div>
       <nav className="navbar bg-body-tertiary  navbar-expand-lg">
@@ -187,7 +215,11 @@ const Navbar = () => {
                             <hr className="dropdown-divider" />
                           </li>
                           <li>
-                            <a className="dropdown-item" href="#/logout">
+                            <a
+                              className="dropdown-item"
+                              href="#/logout"
+                              onClick={handleSignout}
+                            >
                               Logout
                             </a>
                           </li>

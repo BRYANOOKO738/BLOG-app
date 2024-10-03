@@ -14,6 +14,7 @@ import {
   deleteStart,
   deleteSuccess,
   deleteFailure,
+  SignoutSuccess
 } from "../redux/user/userSlice";
 import { app } from "../Firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
@@ -274,6 +275,32 @@ const DashProfile = () => {
     }
   }, [imageFile]);
 
+ const handleSignout = async () => {
+   try {   
+     localStorage.removeItem("access_token");
+     localStorage.removeItem("user");
+     dispatch(SignoutSuccess());
+     const res = await fetch(
+       "http://localhost:3000/routes/updateuser/Signout",
+       {
+         method: "POST"         
+       }
+       
+     );
+
+     if (!res.ok) {
+       const errorData = await res.json();
+       throw new Error(errorData.message || "Failed to sign out");
+     }     
+     navigate("/Login");
+
+     console.log("Signed out successfully");
+   } catch (error) {
+     console.error("Sign-out error:", error.message);
+     dispatch(signoutFailure(error.message));
+   }
+ };
+
   return (
     <div className="d-flex flex-column align-items-center">
       <h3 className="text-center mb-4">Profile</h3>
@@ -388,8 +415,12 @@ const DashProfile = () => {
             </Link>
           </div>
           <div className="mx-5">
-            <Link to="#" className="text-decoration-none text-warning">
-              Change Password
+            <Link
+              to="#"
+              className="text-decoration-none text-warning"
+              onClick={handleSignout}
+            >
+              Sign out
             </Link>
           </div>
         </div>
