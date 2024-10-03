@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken")
 
 const secretKey = 'PROCESS.env.JWT_SECRET';
 router.post('/register', (req, res) => {
+  
     const { username, email, password } = req.body;
 
     if (!username || !password || !email) {
@@ -23,12 +24,13 @@ router.post('/register', (req, res) => {
     if (results.length > 0) {
       return res.status(400).json({ error: 'User is already registered' });
     }
-
+    const image = "https://www.pngkit.com/png/full/281-2812821_user-account-management-logo-user-icon-png.png"; 
+       
     try {
       const hash = await bcrypt.hash(password, 10);
-      const sql = 'INSERT INTO users(username,password, email) VALUES (?, ?, ?)';
+      const sql = 'INSERT INTO users(username,password, email,image) VALUES (?, ?,?, ?)';
       
-      con.query(sql, [username, hash, email], (err, result) => {
+      con.query(sql, [username, hash, email,image], (err, result) => {
         if (err) {
           console.error('Error while inserting:', err);
           return res.status(500).json({ error: 'Error while inserting' });
@@ -81,7 +83,7 @@ router.post('/login', (req, res) => {
                 // Set the cookie and send response
                 return res.status(200).cookie('access_token', token, {
                     httpOnly: true
-                }).json({ id: user.id,email: user.email,username: user.username,image: user.image,token: token,});
+                }).json({ id: user.id,email: user.email,username: user.username,image: user.image,access_token: token});
             } else {
                 return res.status(404).json({ error: 'Invalid credentials' });
             }
@@ -153,7 +155,9 @@ router.post('/google', async (req, res) => {
           );
 
           // Send response with token and user data
-          return res.status(201).json({
+          return res.status(201).cookie('access_token', token, {
+                    httpOnly: true
+                }).json({
             message: 'User created successfully',
             id: user.id,email: user.email,username: user.username,image: user.image,
             token: token
@@ -191,10 +195,12 @@ router.post('/google', async (req, res) => {
             { expiresIn: '1h' }
           );
 
-          return res.status(200).json({
+          return res.status(200).cookie('access_token', token, {
+                    httpOnly: true
+                }).json({
             message: 'User updated successfully',
             token: token,
-            id: user.id,email: user.email,username: user.username,image: user.image,
+            id: user.id,email: user.email,username: user.username,image: user.image,token: user.token
           });
         });
       }

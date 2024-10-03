@@ -11,6 +11,7 @@ import Signup from "./Pages/Signup";
 import Signin from "./Pages/Signin";
 import Footer from "./Components/Footer/Footer";
 import Private from "./Components/Private";
+import { useParams } from "react-router-dom";
 
 
 function App() {
@@ -23,8 +24,8 @@ function App() {
           <Route path="/contact" element={<Dashbord />} />
           <Route path="/register" element={<Signup />} />
           <Route path="/Login" element={<Signin />} />
-          <Route element={<Private/>}>            
-          <Route path="/dashboard" element={<Dashbord />} />
+          <Route element={<Private />}>
+            <Route path="/dashboard" element={<Dashbord />} />
           </Route>
         </Route>
       </Routes>

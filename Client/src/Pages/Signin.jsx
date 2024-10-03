@@ -10,6 +10,7 @@ import {
 import { useDispatch } from "react-redux";
 import Oaoth from "../Oaoth";
 
+
 const Signin = () => {
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,35 +19,49 @@ const Signin = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     dispatch(signinStart()); // Corrected typo
-    fetch("http://localhost:3000/routes/Auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          return res.json().then((data) => {
-            throw new Error(data.error);
-          });
-        }
-      })
-      .then((data) => {
-        dispatch(SigninSuccess(data));
-        setSuccessMessage("Login successful");
-        navigate("/");
-      })
-      .catch((error) => {
-        setError(error.message);
-        setSuccessMessage("");
-        dispatch(SigninFailure(error.message)); // Updated to send the correct error message
-      });
+   const res = await fetch("http://localhost:3000/routes/Auth/login", {
+     method: "POST",
+     headers: {
+       "Content-Type": "application/json",
+     },
+     body: JSON.stringify({ email, password }),
+   })
+     .then((res) => {
+       if (res.ok) {
+         return res.json().then((data) => {
+           console.log("Response data:", data);
+
+           // Check if access_token exists in the response data
+           if (data.access_token) {
+             // Store the access_token in localStorage
+             localStorage.setItem("access_token", data.access_token);
+             console.log("Access token stored in localStorage");
+           } else {
+             console.warn("Access token not found in the response");
+           }
+
+           return data;
+         });
+       } else {
+         return res.json().then((data) => {
+           console.error("Error data:", data);
+           throw new Error(data.error);
+         });
+       }
+     })
+     .then((data) => {
+       dispatch(SigninSuccess(data));
+       setSuccessMessage("Login successful");
+       navigate("/");
+     })
+     .catch((error) => {
+       setError(error.message);
+       setSuccessMessage("");
+       dispatch(SigninFailure(error.message)); // Updated to send the correct error message
+     });
   };
 
   return (
@@ -110,7 +125,7 @@ const Signin = () => {
                 Don't have an account? Sign up
               </Link>
             </div>
-          </form>
+          </form>          
           {error && <p style={{ color: "red" }}>{error}</p>}
           {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
         </div>

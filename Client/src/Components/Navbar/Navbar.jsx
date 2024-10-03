@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../../redux/Theme/themeSlice";
+import { useParams } from "react-router-dom";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
   const { theme } = useSelector((state) => state.theme);
+  const { id } = useParams();
 
   const [isExpanded, setIsExpanded] = useState(true);
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
@@ -175,7 +177,7 @@ const Navbar = () => {
                           <hr />
                           <li>
                             <Link
-                              to="/dashboard?tab=dashboard"
+                              to="/dashboard"
                               className="text-decoration-none text-dark dropdown-item"
                             >
                               <div>Profile</div>

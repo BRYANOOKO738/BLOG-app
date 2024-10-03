@@ -5,6 +5,7 @@ const cookieparser=require("cookie-parser")
 // const con = require('./db');
 const userRoute = require('./routes/Auth');
 const updateuserRoute = require('./routes/Updateuser');
+const verifyToken = require('./Verify.user');
 
 
 

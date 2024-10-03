@@ -1,31 +1,47 @@
-import React, { useState, useEffect } from "react";
+import React,{useState} from "react";
 
-const UploadComponent = ({ uploadError }) => {
-  const [showAlert, setShowAlert] = useState(false);
-
-  useEffect(() => {
-    if (uploadError) {
-      setShowAlert(true);
-      // Set a timeout to hide the alert after 3 seconds
-      const timer = setTimeout(() => {
-        setShowAlert(false);
-      }, 3000); // 3 seconds
-
-      // Clean up the timer if the component unmounts
-      return () => clearTimeout(timer);
-    }
-  }, [uploadError]);
-
+const SimpleModal = ({ showModal, setshowModal }) => {
   return (
-    <div>
-      {/* Alert message */}
-      {showAlert && (
-        <div className="alert alert-danger fade show alert-dismissible">
-          <strong>{uploadError}</strong>
+    <div
+      className={`modal fade ${showModal ? "show" : ""}`}
+      style={{ display: showModal ? "block" : "none" }}
+      tabIndex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden={!showModal}
+    >
+      <div className="modal-dialog" role="document">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title" id="exampleModalLabel">
+              Confirm Deletion
+            </h5>
+            <button
+              type="button"
+              className="close"
+              onClick={() => setshowModal(false)}
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div className="modal-body">
+            Are you sure you want to delete your account?
+          </div>
+          <div className="modal-footer">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => setshowModal(false)}
+            >
+              Cancel
+            </button>
+            <button type="button" className="btn btn-danger">
+              Delete
+            </button>
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
-
-export default UploadComponent;
