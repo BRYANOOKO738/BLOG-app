@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import "../../src/Components/Navbar/Navbar.css"
 import {
   getDownloadURL,
   getStorage,
@@ -75,7 +76,7 @@ const SimpleModal = ({ showModal, setShowModal, handleDelete }) => {
 };
 
 const DashProfile = () => {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, loading } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileURL, setImageFileURL] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(null);
@@ -370,9 +371,9 @@ const DashProfile = () => {
           </div>
         </div>
         <div className="mb-3">
-          <label htmlFor="username" className="form-label">
+          {/* <label htmlFor="username" className="form-label">
             Username
-          </label>
+          </label> */}
           <input
             type="text"
             className="form-control"
@@ -382,9 +383,9 @@ const DashProfile = () => {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="email" className="form-label">
+          {/* <label htmlFor="email" className="form-label">
             Email
-          </label>
+          </label> */}
           <input
             type="email"
             className="form-control"
@@ -394,9 +395,9 @@ const DashProfile = () => {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="password" className="form-label">
+          {/* <label htmlFor="password" className="form-label">
             New Password
-          </label>
+          </label> */}
           <input
             type="password"
             className="form-control"
@@ -405,9 +406,25 @@ const DashProfile = () => {
             placeholder="********"
           />
         </div>
-        <button type="submit" className="btn btn-primary w-100 mb-3">
-          Update Profile
+        <button
+          type="submit"
+          className="btn btn-warning  w-100 mb-3"
+          disabled={loading || uploadProgress}
+        >
+          {loading
+            ? '<div className="spinner-grow text-success"></div>Loading ..'
+            : "Update Profile"}
         </button>
+        {currentUser?.isAdmin && (
+          <Link
+            to="/Create_post"
+            type="submit"
+            className="btn btn-primary w-100 mb-3 logo"
+          >
+            Create a post
+          </Link>
+        )}
+
         <div className="d-flex justify-content-between">
           <div onClick={() => setShowModal(true)}>
             <Link to="#" className="text-decoration-none text-danger">

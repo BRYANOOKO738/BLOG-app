@@ -12,6 +12,8 @@ import Signin from "./Pages/Signin";
 import Footer from "./Components/Footer/Footer";
 import Private from "./Components/Private";
 import { useParams } from "react-router-dom";
+import Create_post from "./Pages/Create_post";
+import ISAdminPrivate from "./Components/iSAdminPrivate"; 
 
 
 function App() {
@@ -26,6 +28,9 @@ function App() {
           <Route path="/Login" element={<Signin />} />
           <Route element={<Private />}>
             <Route path="/dashboard" element={<Dashbord />} />
+            <Route element={<ISAdminPrivate />}>
+              <Route path="/Create_post" element={<Create_post />} />
+            </Route>
           </Route>
         </Route>
       </Routes>

@@ -74,7 +74,8 @@ router.post('/login', (req, res) => {
                     {
                         id: user.id,
                         email: user.email,
-                        username: user.username
+                    username: user.username,
+                        isAdmin: user.isAdmin,
                     },
                     secretKey,
                     { expiresIn: '1h' } // Token expires in 1 hour
@@ -83,7 +84,7 @@ router.post('/login', (req, res) => {
                 // Set the cookie and send response
                 return res.status(200).cookie('access_token', token, {
                     httpOnly: true
-                }).json({ id: user.id,email: user.email,username: user.username,image: user.image,access_token: token});
+                }).json({ id: user.id,email: user.email,username: user.username,image: user.image,access_token: token,isAdmin: user.isAdmin});
             } else {
                 return res.status(404).json({ error: 'Invalid credentials' });
             }
@@ -147,7 +148,8 @@ router.post('/google', async (req, res) => {
               id: user.id,
               email: user.email,
               username: user.username,
-              image:user.image
+              image: user.image,
+              isAdmin:user.isAdmin
 
             },
             secretKey,
@@ -160,7 +162,7 @@ router.post('/google', async (req, res) => {
                 }).json({
             message: 'User created successfully',
             id: user.id,email: user.email,username: user.username,image: user.image,
-            token: token
+            token: token,isAdmin:user.isAdmin
           });
         });
       } else {
@@ -189,7 +191,8 @@ router.post('/google', async (req, res) => {
             {
               id: user.id,
               email: user.email,
-              username: user.username
+              username: user.username,
+              isAdmin: user.isAdmin,
             },
             secretKey,
             { expiresIn: '1h' }
@@ -200,7 +203,7 @@ router.post('/google', async (req, res) => {
                 }).json({
             message: 'User updated successfully',
             token: token,
-            id: user.id,email: user.email,username: user.username,image: user.image,token: user.token
+            id: user.id,email: user.email,username: user.username,image: user.image,token: user.token,isAdmin: user.isAdmin
           });
         });
       }
