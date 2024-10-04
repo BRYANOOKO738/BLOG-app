@@ -6,6 +6,7 @@ const router = express.Router();
 const user = require("./Auth")
 const verifyToken = require('../Verify.user');
 
+
 router.put('/update/:id',verifyToken,  async (req, res) => {
     try {
         const { id } = req.params;
