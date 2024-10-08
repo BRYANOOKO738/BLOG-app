@@ -98,7 +98,7 @@ const Create_post = () => {
         setImageUpload(null);
         setImageUploadError(null);
         setFile(null);
-        navigate("/Post/slug");
+        navigate(`/Post/${data.slug}`);
       } else {
         // If the response is not JSON, read it as text
         const text = await res.text();
@@ -171,6 +171,7 @@ const Create_post = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, category: e.target.value })
                     }
+                    
                   >
                     <option value="" disabled selected>
                       Select the Category
@@ -234,6 +235,7 @@ const Create_post = () => {
                     onChange={(value) =>
                       setFormData({ ...formData, content: value })
                     }
+                    // ref={quillRef}
                   />
                 </div>
                 <div className="d-flex justify-content-center mb-3 ">

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { useSelector } from "react-redux";
 
 const Footer = () => {
@@ -6,7 +6,6 @@ const Footer = () => {
   return (
     <div
       style={{
-        
         color: "white",
         position: "relative",
       }}
@@ -86,19 +85,19 @@ const Footer = () => {
       </div>
       <div className="d-flex justify-content-between mx-3">
         <a href="#">
-          <i class="bi bi-facebook"></i>
+          <i className="bi bi-facebook"></i>
         </a>
         <a href="#">
-          <i class="bi bi-twitter-x"></i>
+          <i className="bi bi-twitter-x"></i>
         </a>
         <a href="#">
-          <i class="bi bi-instagram"></i>
+          <i className="bi bi-instagram"></i>
         </a>
         <a href="#">
-          <i class="bi bi-linkedin"></i>
+          <i className="bi bi-linkedin"></i>
         </a>
         <a href="#">
-          <i class="bi bi-youtube"></i>
+          <i className="bi bi-youtube"></i>
         </a>
       </div>
       <p className="text-center mt-2">
@@ -107,6 +106,6 @@ const Footer = () => {
       </p>
     </div>
   );
-}
+};
 
-export default Footer
+export default Footer;
