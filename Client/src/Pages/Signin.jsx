@@ -31,14 +31,13 @@ const Signin = () => {
    })
      .then((res) => {
        if (res.ok) {
-         return res.json().then((data) => {
-           console.log("Response data:", data);
+         return res.json().then((data) => {          
 
            // Check if access_token exists in the response data
            if (data.access_token) {
              // Store the access_token in localStorage
              localStorage.setItem("access_token", data.access_token);
-             console.log("Access token stored in localStorage");
+            //  console.log("Access token stored in localStorage");
            } else {
              console.warn("Access token not found in the response");
            }
