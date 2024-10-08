@@ -7,7 +7,9 @@ import { SignoutSuccess } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 
 
+
 const DashSidebar = () => {
+  const { currentUser } = useSelector((state) => state.user);
   const location = useLocation();
   const [tab, setTab] = useState("");
   const dispatch = useDispatch();
@@ -64,11 +66,25 @@ const DashSidebar = () => {
       <ul className="nav flex-column">
         <li className="nav-item">
           <Link to="/dashboard/?tab=profile" className="nav-link">
+            {/* label={user} */}
             <i className="bi bi-person"></i> Profile
+            {currentUser.isAdmin ? (
+              <span className="badge bg-danger ms-2">Admin</span> // Red badge for Admin
+            ) : (
+              <span className="badge bg-primary ms-2">User</span> // Blue badge for User
+            )}
           </Link>
         </li>
+        {currentUser.isAdmin ? (
+          <li className="nav-item">
+            <Link to="/dashboard/?tab=post" className="nav-link">
+              <i className="bi bi-file-post"></i> Posts
+            </Link>
+          </li>
+        ) : null}
+
         <li className="nav-item">
-          <Link  className="nav-link" onClick={handleSignout}>
+          <Link className="nav-link" onClick={handleSignout}>
             <i className="bi bi-box-arrow-right"></i> Sign Out
           </Link>
         </li>

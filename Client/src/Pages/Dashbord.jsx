@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import DashProfile from '../Components/DashProfile'
 import DashSidebar from '../Components/DashSidebar'
+import Dashpost from '../Components/Dashpost'
 
 
 
@@ -29,8 +30,9 @@ const Dashbord = () => {
         className="d-flex justify-content-center align-items-center dash-profile-container"
         style={{ flex: 1, transform: "translateY(-20px)" }} // Adjust the value to suit your needs
       >
-        <DashProfile />
+        {tab === "profile" && <DashProfile />}
       </div>
+      {tab === "post" && <Dashpost />}
     </div>
   );
 }

@@ -415,7 +415,7 @@ const DashProfile = () => {
             ? '<div className="spinner-grow text-success"></div>Loading ..'
             : "Update Profile"}
         </button>
-        {currentUser?.isAdmin && (
+        {currentUser?.isAdmin ? (
           <Link
             to="/Create_post"
             type="submit"
@@ -423,7 +423,7 @@ const DashProfile = () => {
           >
             Create a post
           </Link>
-        )}
+        ):null}
 
         <div className="d-flex justify-content-between">
           <div onClick={() => setShowModal(true)}>

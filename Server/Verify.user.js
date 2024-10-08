@@ -19,14 +19,14 @@ const verifyToken = (req, res, next) => {
     return res.status(403).send('No token provided.');
   }
 
-  console.log(token);
+  // console.log(token);
 
   // Use the same secret used when signing the token
 //   const secretKey = process.env.JWT_SECRET || '@OOKO738kk';
 
   // Decode the token without verifying the signature
   const decodedToken = jwt.decode(token);
-  console.log(decodedToken);
+  // console.log(decodedToken);
 
   // Check if the token is decoded properly and contains the id
   if (!decodedToken || !decodedToken.id) {
@@ -38,7 +38,7 @@ const verifyToken = (req, res, next) => {
 
   // Assign the decoded id to req.user.id
     req.user = decodedToken;
-    console.log(req.user);
+    // console.log(req.user);
 
   // Proceed to the next middleware
   next();
