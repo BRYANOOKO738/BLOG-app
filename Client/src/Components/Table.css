@@ -1,0 +1,11 @@
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+}
+.link-no-decoration:hover {
+  text-decoration: underline; /* Underline on hover */
+}

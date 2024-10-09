@@ -13,7 +13,7 @@ const Footer = () => {
         theme === "dark" ? "bg-dark text-white" : "bg-light text-dark"
       }`}
     >
-      <div className="row">
+      <div className="row ">
         <div className="col text-decoration-none">
           <h3>About</h3>
           <ul>
