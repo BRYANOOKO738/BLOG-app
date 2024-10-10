@@ -6,6 +6,7 @@ import store, { persistor } from "./redux/Store.js"; // Corrected import
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import ThemeProvider from "./Components/ThemeProvider.jsx";
+import Footer from "./Components/Footer/Footer";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -16,6 +17,9 @@ createRoot(document.getElementById("root")).render(
         <BrowserRouter>
           <ThemeProvider>
             <App />
+            {/* <div className="relative z-10 bg-gray-200">
+              <Footer />
+            </div> */}
           </ThemeProvider>
         </BrowserRouter>
       </PersistGate>

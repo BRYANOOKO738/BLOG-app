@@ -1,36 +1,145 @@
-import React,{useState,useEffect} from 'react'
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import "./Table.css"
-import { Link } from 'react-router-dom';
+import "./Table.css";
+import { Link } from "react-router-dom";
+
+const SimpleModal = ({ showModal, setShowModal, handleDelete }) => {
+  return (
+    <div
+      className={`modal fade ${showModal ? "show" : ""}`}
+      style={{
+        display: showModal ? "block" : "none",
+        position: "absolute",
+        top: "50px",
+        left: "50%",
+        transform: "translateX(-50%)",
+        zIndex: 1050,
+        width: "300px",
+      }}
+    >
+      <div className="modal-dialog modal-sm">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title text-danger">Delete Post</h5>
+            <button
+              type="button"
+              className="btn-close"
+              onClick={() => setShowModal(false)}
+            ></button>
+          </div>
+          <div className="d-flex justify-content-center text-secondary">
+            <i className="bi bi-exclamation-circle fs-3"></i>
+          </div>
+          <div className="modal-body text-danger">
+            <strong>Are you sure you want to delete this post?</strong>
+            <p className="text-warning">This action cannot be reversed</p>
+          </div>
+          <div className="modal-footer">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => setShowModal(false)}
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={handleDelete}
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Dashpost = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const [showModal, setShowModal] = useState(false);
+  const [postToDelete, setPostToDelete] = useState(null);
   const [post, setPost] = useState([]);
-  console.log(post);
+  const [show, setshow] = useState(true);
+
   useEffect(() => {
-    const fetchpost = async() => {
+    const fetchpost = async () => {
       try {
         const res = await fetch(
           `http://localhost:3000/routes/Publish/getpost?author_id=${currentUser.id}`
         );
         const data = await res.json();
-        if (res.ok) {          
+        if (res.ok) {
           setPost(data.posts);
-        }        
-        // console.log(data);
+          if (data.posts.length < 6) {
+            setshow(false);
+          }
+        }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
+    };
     if (currentUser.isAdmin) {
       fetchpost();
     }
-  }, [currentUser.id])
+  }, [currentUser.id]);
+
   const { theme } = useSelector((state) => state.theme);
-  
+
+  const handleShow = async () => {
+    const startindex = post.length;
+    try {
+      const res = await fetch(
+        `http://localhost:3000/routes/Publish/getpost?author_id=${currentUser.id}&startindex=${startindex}`
+      );
+      const data = await res.json();
+      if (res.ok) {
+        setPost([...post, ...data.posts]);
+        if (data.posts.length < 5) {
+          setshow(false);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching more posts:", error);
+    }
+  };
+  const getAuthToken = () => {
+    return localStorage.getItem("access_token");
+  };
+
+  const handleDelete = async () => {
+    const token = getAuthToken();
+    if (postToDelete) {
+      try {
+        const res = await fetch(
+          `http://localhost:3000/routes/Publish/deletepost/${postToDelete}/${currentUser.id}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const data = await res.json();
+        if (res.ok) {
+          setPost(post.filter((p) => p.id !== postToDelete));
+          console.log(data.message); // Log the success message
+        } else {
+          console.error("Failed to delete post:", data.message);
+        }
+      } catch (error) {
+        console.error("Error deleting post:", error);
+      }
+      setShowModal(false);
+      setPostToDelete(null);
+    }
+  };
+
   return (
     <div
       className={`container ${theme === "dark" ? "bg-secondary" : "bg-white"}`}
-      
     >
       {/* Table for large screens */}
       <div className="table-responsive d-none d-md-block">
@@ -47,7 +156,7 @@ const Dashpost = () => {
           </thead>
           <tbody>
             {post.map((post) => (
-              <tr key={post.id} >
+              <tr key={post.id}>
                 <td>{new Date(post.updated_at).toLocaleDateString()}</td>
                 <td>
                   <Link to={`/post/${post.slug}`}>
@@ -55,7 +164,7 @@ const Dashpost = () => {
                       src={post.image}
                       alt={post.title}
                       className="img-fluid rounded"
-                      style={{ width: "100px", height: "100px" }}
+                      style={{ width: "100px", height: "95px" }}
                     />
                   </Link>
                 </td>
@@ -69,10 +178,23 @@ const Dashpost = () => {
                 </td>
                 <td>{post.category}</td>
                 <td>
-                  <button className="btn btn-primary btn-sm">Edit</button>
+                  <Link
+                    to={`/update-post/${post.id}`}
+                    className="btn btn-primary btn-sm"
+                  >
+                    Edit
+                  </Link>
                 </td>
                 <td>
-                  <button className="btn btn-danger btn-sm">Delete</button>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => {
+                      setShowModal(true);
+                      setPostToDelete(post.id);
+                    }}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
@@ -91,7 +213,7 @@ const Dashpost = () => {
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   {post.title}
-                </Link>{" "}
+                </Link>
               </h5>
               <Link to={`/post/${post.slug}`}>
                 <img
@@ -106,24 +228,48 @@ const Dashpost = () => {
                 {new Date(post.updated_at).toLocaleDateString()}
               </p>
               <p>
-                <strong>Category:</strong>
-                {post.category}
+                <strong>Category:</strong> {post.category}
               </p>
               <div className="d-flex justify-content-between">
                 <Link
                   to={`/update-post/${post.id}`}
-                  className="btn btn-primary btn-sm "
+                  className="btn btn-primary btn-sm"
                 >
                   Edit
                 </Link>
-                <button className="btn btn-danger btn-sm">Delete</button>
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={() => {
+                    setShowModal(true);
+                    setPostToDelete(post.id);
+                  }}
+                >
+                  Delete
+                </button>
               </div>
             </div>
           </div>
         ))}
       </div>
+
+      {show && (
+        <div className="d-flex justify-content-center mb-3">
+          <button
+            onClick={handleShow}
+            className="btn btn-primary w-100 mb-3 logo"
+          >
+            SHOW MORE ▼▼
+          </button>
+        </div>
+      )}
+
+      <SimpleModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        handleDelete={handleDelete}
+      />
     </div>
   );
-}
+};
 
-export default Dashpost
+export default Dashpost;

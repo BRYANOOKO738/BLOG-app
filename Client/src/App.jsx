@@ -9,7 +9,6 @@ import Dashbord from "./Pages/Dashbord";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Signup from "./Pages/Signup";
 import Signin from "./Pages/Signin";
-import Footer from "./Components/Footer/Footer";
 import Private from "./Components/Private";
 import { useParams } from "react-router-dom";
 import Create_post from "./Pages/Create_post";
@@ -19,7 +18,7 @@ import ISAdminPrivate from "./Components/iSAdminPrivate";
 function App() {
   return (
     <>
-      <Routes>
+      <Routes >
         <Route path="/" element={<Navbar />}>
           <Route exact path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -34,7 +33,7 @@ function App() {
           </Route>
         </Route>
       </Routes>
-      <Footer />
+      
     </>
   );
 }

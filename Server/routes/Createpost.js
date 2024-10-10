@@ -134,6 +134,39 @@ router.get("/getpost", (req, res) => {
     );
   });
 });
+router.delete("/deletepost/:postid/:id", verifyToken, (req, res) => {
+  const { postid, id } = req.params; 
+
+  // Convert id from string to integer for comparison
+  const userId = parseInt(id, 10);
+  const postId = parseInt(postid, 10);
+
+  if (!req.user.isAdmin && req.user.id !== userId) {
+    return res
+      .status(403)
+      .json({ message: "You do not have permission to delete this post." });
+  }
+
+  // Proceed to delete the post in the database
+  con.query(
+    "DELETE FROM blog_posts WHERE id = ? AND author_id = ?",
+    [postId, userId],
+    (err, result) => {
+      if (err) {
+        console.error("Error deleting post:", err);
+        return res.status(500).json({ message: "Server error" });
+      }
+      if (result.affectedRows === 0) {
+        return res
+          .status(404)
+          .json({
+            message: "Post not found or you don't have permission to delete it",
+          });
+      }
+      return res.json({ message: "Post deleted successfully" });
+    }
+  );
+});
 
 
 module.exports = router;

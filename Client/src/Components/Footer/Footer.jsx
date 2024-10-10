@@ -3,37 +3,41 @@ import { useSelector } from "react-redux";
 
 const Footer = () => {
   const { theme } = useSelector((state) => state.theme);
+
   return (
-    <div
+    <footer
       style={{
         color: "white",
-        position: "relative",
+        position: "sticky",
+        bottom: 0,
+        width: "100%",
+        zIndex: 10,
       }}
       className={`sidebar ${
         theme === "dark" ? "bg-dark text-white" : "bg-light text-dark"
       }`}
     >
-      <div className="row ">
+      <div className="row">
         <div className="col text-decoration-none">
           <h3>About</h3>
           <ul>
             <li>
-              <a href="#" className="text-decoration-none ">
+              <a href="#" className="text-decoration-none">
                 Press
               </a>
             </li>
             <li>
-              <a href="#" className="text-decoration-none ">
+              <a href="#" className="text-decoration-none">
                 Careers
               </a>
             </li>
             <li>
-              <a href="#" className="text-decoration-none ">
+              <a href="#" className="text-decoration-none">
                 Terms of Service
               </a>
             </li>
             <li>
-              <a href="#" className="text-decoration-none ">
+              <a href="#" className="text-decoration-none">
                 Privacy Policy
               </a>
             </li>
@@ -45,38 +49,31 @@ const Footer = () => {
           <p>Phone: +1 123-456-7890</p>
           <p>Address: 123 Main St, Anytown, USA</p>
         </div>
-        {/* <div className='col'>
-                  <h3>Subscribe</h3>
-                  <form>
-                    <input type="email" placeholder="Enter your email address" />
-                    <button type="submit">Subscribe</button>
-                  </form>
-              </div> */}
         <div className="col">
           <h3>Categories</h3>
           <ul>
             <li>
-              <a href="#" className="text-decoration-none ">
+              <a href="#" className="text-decoration-none">
                 Technology
               </a>
             </li>
             <li>
-              <a href="#" className="text-decoration-none ">
+              <a href="#" className="text-decoration-none">
                 Business
               </a>
             </li>
             <li>
-              <a href="#" className="text-decoration-none ">
+              <a href="#" className="text-decoration-none">
                 Sports
               </a>
             </li>
             <li>
-              <a href="#" className="text-decoration-none ">
+              <a href="#" className="text-decoration-none">
                 World
               </a>
             </li>
             <li>
-              <a href="#" className="text-decoration-none ">
+              <a href="#" className="text-decoration-none">
                 Entertainment
               </a>
             </li>
@@ -104,7 +101,7 @@ const Footer = () => {
         Copyright © {new Date().getFullYear()} Unbound voices. All rights
         reserved.
       </p>
-    </div>
+    </footer>
   );
 };
 
