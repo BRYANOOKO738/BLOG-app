@@ -13,12 +13,13 @@ import Private from "./Components/Private";
 import { useParams } from "react-router-dom";
 import Create_post from "./Pages/Create_post";
 import ISAdminPrivate from "./Components/iSAdminPrivate"; 
+import UpdatePost from "./Pages/UpdatePost";
 
 
 function App() {
   return (
     <>
-      <Routes >
+      <Routes>
         <Route path="/" element={<Navbar />}>
           <Route exact path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -29,11 +30,11 @@ function App() {
             <Route path="/dashboard" element={<Dashbord />} />
             <Route element={<ISAdminPrivate />}>
               <Route path="/Create_post" element={<Create_post />} />
+              <Route path="/Update-post/:postid" element={<UpdatePost />} />
             </Route>
           </Route>
         </Route>
       </Routes>
-      
     </>
   );
 }
