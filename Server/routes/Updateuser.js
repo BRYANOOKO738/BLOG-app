@@ -104,5 +104,81 @@ router.post("/Signout", (req,res) => {
         console.error('Error signing out user:', error);
     }
 })
+router.get("/getAllUsers", verifyToken, async (req, res) => {
+  if (!req.user.isAdmin) {
+    return res
+      .status(401)
+      .json({ message: "You do not have permission to view all users." });
+  }
+
+  try {
+    // Pagination parameters
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 10;
+
+    // Sorting parameters (default to sorting by 'created_at' in descending order)
+    const sortField = req.query.sortField || "created_at";
+    const sortDirection = req.query.sortDirection === "asc" ? "ASC" : "DESC";
+
+    // Query to get all users with pagination and sorting
+    const query = `SELECT * FROM users ORDER BY ${sortField} ${sortDirection} LIMIT ?, ?`;
+
+    con.query(query, [startIndex, limit], (err, users) => {
+      if (err) {
+        console.error("Error fetching users:", err);
+        return res.status(500).json({ message: "Error fetching users" });
+      }
+
+      // Remove password from each user object
+      const usersWithoutPassword = users.map((user) => {
+        const { password, ...userWithoutPassword } = user;
+        return userWithoutPassword;
+      });
+
+      // Query to get total users count
+      const totalUsersQuery = "SELECT COUNT(*) AS totalUsers FROM users";
+
+      // Query to get users created in the last 1 month
+      const lastMonthUsersQuery = `
+        SELECT COUNT(*) AS lastMonthUsers 
+        FROM users 
+        WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+      `;
+
+      // Execute the queries
+      con.query(totalUsersQuery, (err, totalResult) => {
+        if (err) {
+          console.error("Error fetching total users:", err);
+          return res
+            .status(500)
+            .json({ message: "Error fetching total users" });
+        }
+        const totalUsers = totalResult[0].totalUsers;
+
+        con.query(lastMonthUsersQuery, (err, lastMonthResult) => {
+          if (err) {
+            console.error("Error fetching users from last month:", err);
+            return res
+              .status(500)
+              .json({ message: "Error fetching users from last month" });
+          }
+          const lastMonthUsers = lastMonthResult[0].lastMonthUsers;
+
+          // Send back the users without passwords, along with total and last month counts
+          res.status(200).json({
+            message: "Users fetched successfully",
+            users: usersWithoutPassword,
+            totalUsers,
+            lastMonthUsers,
+          });
+        });
+      });
+    });
+  } catch (error) {
+    console.error("Server error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 
 module.exports = router;
