@@ -180,25 +180,26 @@ const Dashusers = () => {
               <tr key={user.id}>
                 <td>{new Date(user.created_at).toLocaleDateString()}</td>
                 <td>
-                  <Link to={`/user/${user.slug}`}>
-                    <img
-                      src={user.image}
-                      alt={user.username}
-                      className="img-fluid rounded"
-                      style={{ width: "100px", height: "95px" }}
-                    />
-                  </Link>
+                  <img
+                    src={user.image}
+                    alt={user.username}
+                    className="img-fluid rounded-circle"
+                    style={{ width: "100px", height: "95px" }}
+                    onError={(e) => {
+                      e.target.src =
+                        "https://www.pngkit.com/png/full/281-2812821_user-account-management-logo-user-icon-png.png";
+                    }}
+                  />
                 </td>
-                <td>
-                  <Link
-                    to={`/user/${user.slug}`}
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    {user.username}
-                  </Link>
-                </td>
+                <td>{user.username}</td>
                 <td>{user.email}</td>
-                <td>{user.isAdmin ? "Yes" : "No"}</td>
+                <td>
+                  {user.isAdmin ? (
+                    <i class="bi bi-check-circle-fill text-success"></i>
+                  ) : (
+                    <i class="bi bi-x-circle-fill text-danger"></i>
+                  )}
+                </td>
                 <td>
                   <button
                     className="btn btn-danger btn-sm"
@@ -233,8 +234,12 @@ const Dashusers = () => {
                 <img
                   src={user.image}
                   alt={user.username}
-                  className="img-fluid mb-3 rounded"
+                  className="img-fluid mb-3 "
                   style={{ height: "230px" }}
+                  onError={(e) => {
+                    e.target.src =
+                      "https://www.pngkit.com/png/full/281-2812821_user-account-management-logo-user-icon-png.png";
+                  }}
                 />
               </Link>
               <p>
@@ -245,7 +250,12 @@ const Dashusers = () => {
                 <strong>Email:</strong> {user.email}
               </p>
               <p>
-                <strong>Admin:</strong> {user.isAdmin ? "Yes" : "No"}
+                <strong>Admin:</strong>{" "}
+                {user.isAdmin ? (
+                  <i class="bi bi-check-circle-fill"></i>
+                ) : (
+                  <i class="bi bi-x-circle-fill"></i>
+                )}
               </p>
               <div className="d-flex justify-content-between">
                 <button
