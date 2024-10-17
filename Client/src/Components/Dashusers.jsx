@@ -134,7 +134,7 @@ const Dashusers = () => {
     if (userToDelete) {
       try {
         const res = await fetch(
-          `http://localhost:3000/routes/Publish/deleteuser/${userToDelete}/${currentUser.id}`,
+          `http://localhost:3000/routes/updateuser/delete/${userToDelete}`,
           {
             method: "DELETE",
             headers: {

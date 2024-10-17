@@ -71,30 +71,36 @@ router.put('/update/:id',verifyToken,  async (req, res) => {
 
 
 router.delete("/delete/:id", verifyToken, (req, res) => {
-    const { id } = req.params;    
+  const { id } = req.params;
 
-    console.log('Logged-in user ID:', req.user.id);
-    console.log('Requested delete ID:', id);
+  // console.log("Logged-in user ID:", req.user.id);
+  // console.log("Requested delete ID:", id);
 
-    // Convert id from string to integer for comparison
-    const userId = parseInt(id, 10);
+  // Convert id from string to integer for comparison
+  const userId = parseInt(id, 10);
+  const loggedInUserId = parseInt(req.user.id, 10);
 
-    // Verify if the logged-in user ID matches the requested user ID for deletion
-    if (req.user.id !== userId) {
-        return res.status(403).json({ message: 'User not verified' });
-    } 
+  // Check if the logged-in user is the account owner or an admin
+  if (loggedInUserId !== userId && !req.user.isAdmin) {
+    return res
+      .status(403)
+      .json({
+        message:
+          "Unauthorized: You can only delete your own account or you must be an admin",
+      });
+  }
 
-    // Proceed to delete the user in the database
-    con.query('DELETE FROM users WHERE id = ?', [userId], (err, result) => {
-        if (err) {
-            console.error('Error deleting user:', err);
-            return res.status(500).json({ message: 'Server error' });
-        }
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        return res.json({ message: 'User deleted successfully' });
-    });
+  // Proceed to delete the user in the database
+  con.query("DELETE FROM users WHERE id = ?", [userId], (err, result) => {
+    if (err) {
+      console.error("Error deleting user:", err);
+      return res.status(500).json({ message: "Server error" });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.json({ message: "User deleted successfully" });
+  });
 });
 
 router.post("/Signout", (req,res) => {
