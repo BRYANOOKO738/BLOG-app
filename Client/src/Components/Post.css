@@ -1,0 +1,10 @@
+@media (min-width: 992px) {
+  .large-screen-margin {
+    margin: 100px;
+  }
+}
+@media (max-width: 992px) {
+  .large-screen-margin {
+    margin-top: 50px;
+  }
+}

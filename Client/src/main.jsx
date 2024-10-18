@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import ThemeProvider from "./Components/ThemeProvider.jsx";
 import Footer from "./Components/Footer/Footer";
+import "./index.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

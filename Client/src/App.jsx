@@ -14,6 +14,7 @@ import { useParams } from "react-router-dom";
 import Create_post from "./Pages/Create_post";
 import ISAdminPrivate from "./Components/iSAdminPrivate"; 
 import UpdatePost from "./Pages/UpdatePost";
+import Post from "./Pages/Post";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navbar />}>
           <Route exact path="/" element={<Home />} />
+          <Route  path="/post/:postSlug" element={<Post />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Dashbord />} />
           <Route path="/register" element={<Signup />} />
