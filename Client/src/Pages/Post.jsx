@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "../Components/Post.css";
 import CallToAction from "../Components/CallToAction";
+import Coments from "../Components/Coments/Coments";
 
 const Post = () => {
   const [loading, setloading] = useState(true);
@@ -98,6 +99,9 @@ const Post = () => {
       )}
       <div className="container mx-auto w-100" style={{maxWidth:"1120px"}}>
         <CallToAction />
+      </div>
+      <div>
+        <Coments PostId={post && post.id} />
       </div>
     </div>
   );

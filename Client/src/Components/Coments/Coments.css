@@ -1,0 +1,14 @@
+.comment-form {
+  width: 90%;   /* Full width on mobile */
+  max-width: 600px;  /* Maximum width for larger screens */
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
+
+@media (min-width: 768px) {
+  .comment-form {
+    width: 50%;  /* Half width on larger screens */
+  }
+}

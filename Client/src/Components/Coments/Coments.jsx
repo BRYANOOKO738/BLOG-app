@@ -1,0 +1,92 @@
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import "./Coments.css"
+
+const Comments = ({ PostId, maxCharacters = 280 }) => {
+  const { currentUser } = useSelector((state) => state.user);
+  const [comment, setComment] = useState("");
+  const remainingCharacters = maxCharacters - comment.length;
+
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // You can process the comment here, like sending it to a server.
+    console.log(`Comment submitted for Post ID ${PostId}: ${comment}`);
+
+    // Clear the comment input after submission
+    setComment("");
+  };
+
+  return (
+    <div className="" style={{ margin: "50px" }}>
+      {currentUser ? (
+        <div className="d-flex align-items-center mb-4">
+          <p className="mr-2">Signed in as:</p>
+          <img
+            src={currentUser.image}
+            alt={currentUser.username}
+            className="img-fluid rounded-circle mr-2"
+            style={{ width: "50px", height: "auto" }}
+          />
+          <Link to="/dashboard/?tab=profile" className="text-decoration-none">
+            @{currentUser.username}
+          </Link>
+        </div>
+      ) : (
+        <div className="">
+          <p>Sign In to Comment</p>
+          <Link className="text-decoration-none" to="/Login">
+            Sign In
+          </Link>
+        </div>
+      )}
+
+      {currentUser && (
+        <div className="justify-content-center">
+        <form
+          onSubmit={handleSubmit}
+          className=" dark:bg-gray-800 rounded-lg shadow-md p-6 justify-content-center"
+        >
+          <div className="mb-4">
+            <label
+              htmlFor="comment"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+            >
+              Your comment
+            </label>
+            <div className="relative">
+              <textarea
+                id="comment"
+                name="comment"
+                rows="4"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                maxLength={maxCharacters}
+                placeholder="What are your thoughts?"
+                className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white resize-none comment-form"
+                required
+              />
+              <div className="absolute bottom-3 right-3 text-sm text-gray-500 dark:text-gray-400">
+                {remainingCharacters} characters remaining
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              disabled={comment.length === 0}
+              className="px-4 py-2 bg-primary text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition duration-300"
+            >
+              Post Comment
+            </button>
+          </div>
+        </form>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Comments;

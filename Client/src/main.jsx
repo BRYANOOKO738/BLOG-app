@@ -8,6 +8,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import ThemeProvider from "./Components/ThemeProvider.jsx";
 import Footer from "./Components/Footer/Footer";
 import "./index.css";
+import ScrollToTop from "./Components/ScrollToTop.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -16,6 +17,7 @@ createRoot(document.getElementById("root")).render(
       {/* 'store' from default import */}
       <PersistGate loading={null} persistor={persistor}>
         <BrowserRouter>
+          <ScrollToTop/>
           <ThemeProvider>
             <App />
             {/* <div className="relative z-10 bg-gray-200">
