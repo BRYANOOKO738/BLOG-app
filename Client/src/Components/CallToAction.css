@@ -1,0 +1,8 @@
+ .custom-border {
+    border-color: #38b2ac; /* Custom till color */
+  }
+  .rounded-custom {
+    border-top-left-radius: 1rem; /* Top-left corner rounded */
+    border-bottom-right-radius: 1rem; /* Bottom-right corner rounded */
+    margin-bottom: 10px;
+  }
