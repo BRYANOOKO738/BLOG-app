@@ -3,14 +3,40 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./Coments.css"
 
-const Comments = ({ PostId, maxCharacters = 280 }) => {
+const Comments = ({ PostId }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [comment, setComment] = useState("");
-  const remainingCharacters = maxCharacters - comment.length;
-
+  
+ const getAuthToken = () => {
+   return localStorage.getItem("access_token");
+ };
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    const token = getAuthToken();
     e.preventDefault();
+    if (comment.length < 0) {
+      alert("Comment cannot be empty!");
+      return;
+    }
+    const res = await fetch(
+      "http://localhost:3000/routes/comment/CreateComments",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          content: comment,
+          PostId,
+          userId: currentUser.id,
+        }),
+      }
+    );
+    const data = await res.json();
+    if (res.ok) {
+      setComment("")
+    }
 
     // You can process the comment here, like sending it to a server.
     console.log(`Comment submitted for Post ID ${PostId}: ${comment}`);
@@ -47,7 +73,7 @@ const Comments = ({ PostId, maxCharacters = 280 }) => {
         <div className="justify-content-center">
         <form
           onSubmit={handleSubmit}
-          className=" dark:bg-gray-800 rounded-lg shadow-md p-6 justify-content-center"
+          className=" dark:bg-gray-800 rounded-lg shadow-md p-6 justify-content-center border rounded"
         >
           <div className="mb-4">
             <label
@@ -63,13 +89,13 @@ const Comments = ({ PostId, maxCharacters = 280 }) => {
                 rows="4"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                maxLength={maxCharacters}
+                
                 placeholder="What are your thoughts?"
                 className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white resize-none comment-form"
                 required
               />
               <div className="absolute bottom-3 right-3 text-sm text-gray-500 dark:text-gray-400">
-                {remainingCharacters} characters remaining
+                {280 - comment.length} characters remaining
               </div>
             </div>
           </div>

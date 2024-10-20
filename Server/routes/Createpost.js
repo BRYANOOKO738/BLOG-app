@@ -244,8 +244,4 @@ router.put("/updatepost/:postid/:id", verifyToken, (req, res) => {
   }
 });
 
-
-  
-
-
 module.exports = router;

@@ -7,8 +7,7 @@ const userRoute = require('./routes/Auth');
 const updateuserRoute = require('./routes/Updateuser');
 const publishRoute=require('./routes/Createpost');
 const verifyToken = require('./Verify.user');
-
-
+const commentsRoute = require('./routes/Coment');
 
 
 const app = express();
@@ -20,6 +19,7 @@ app.use(cookieparser())
 app.use('/routes/Auth', userRoute)
 app.use('/routes/updateuser', updateuserRoute)
 app.use('/routes/Publish', publishRoute)
+app.use("/routes/comment", commentsRoute)
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 })
