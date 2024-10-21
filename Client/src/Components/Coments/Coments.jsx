@@ -38,8 +38,7 @@ const Comments = ({ PostId }) => {
       setComment("")
     }
 
-    // You can process the comment here, like sending it to a server.
-    console.log(`Comment submitted for Post ID ${PostId}: ${comment}`);
+    
 
     // Clear the comment input after submission
     setComment("");
