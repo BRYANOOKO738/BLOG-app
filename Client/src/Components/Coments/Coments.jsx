@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./Coments.css"
+import Comment from "../Comment";
 
 const Comments = ({ PostId }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [comment, setComment] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [comments, setcomments] = useState([])
+  console.log(comments)
   
  const getAuthToken = () => {
    return localStorage.getItem("access_token");
@@ -40,17 +43,41 @@ const Comments = ({ PostId }) => {
       setComment("");
       setSuccessMessage("Comment Added successfully");
       setTimeout(() => setSuccessMessage(""), 3000);
+      setcomments([data, ...comments]);
       // Clear the comment input after submission
       setComment("");
     } else {
       setErrorMessage(error.toString());
       setTimeout(() => setErrorMessage(""), 3000);
-    }
-
-    
+    }  
 
    
   };
+  useEffect(() => {
+    const getComments = async () => { 
+      try {
+         const res = await fetch(
+           `http://localhost:3000/routes/comment/getAllPost/${PostId}`,
+           {
+             method: "GET",
+             headers: {
+               "Content-Type": "application/json",
+             },
+           }
+         );
+        if (res.ok) {
+          const data = await res.json();
+          setcomments(data);
+        }
+        
+      } catch (error) {
+        console.error(error);
+      }
+     
+    }
+    getComments();
+  }, [PostId])
+  
 
   return (
     <div className="" style={{ margin: "50px" }}>
@@ -119,6 +146,24 @@ const Comments = ({ PostId }) => {
               </button>
             </div>
           </form>
+        </div>
+      )}
+      {comments.length === 0 ? (
+        <p>No Comments Yet</p>
+      ) : (
+        <div>
+          <div>
+            Comments 
+            <span
+              className="badge"
+              style={{ backgroundColor: "blue", color: "white" }}
+            >
+              {comments.length}
+            </span>
+            </div>
+          {comments.map((comment) => (
+            <Comment key={comment.id} comment={comment} />
+            ))}  
         </div>
       )}
     </div>

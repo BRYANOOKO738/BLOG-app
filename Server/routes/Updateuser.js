@@ -185,6 +185,38 @@ router.get("/getAllUsers", verifyToken, async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 });
+// Get user by userId
+router.get("/:userId", (req, res) => {
+    const { userId } = req.params; // Get userId from the request parameters
+
+    // Validate userId
+    if (!userId) {
+        return res.status(400).json({ message: 'User ID is required.' });
+    }
+
+    const sql = 'SELECT * FROM users WHERE id = ?';
+
+    con.query(sql, [userId], (err, results) => {
+        if (err) {
+            console.error('Database error:', err);
+            return res.status(500).json({ error: 'Database error.' });
+        }
+
+        // Check if the user was found
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        // Get the user object
+        const user = results[0];
+
+        // Remove the password field
+        delete user.password;
+
+        // Send back the user data excluding the password
+        res.json(user);
+    });
+});
 
 
 module.exports = router;

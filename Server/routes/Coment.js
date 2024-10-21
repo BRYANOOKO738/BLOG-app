@@ -3,47 +3,43 @@ const router = express.Router();
 const verifyToken = require("../Verify.user");
 const con = require("../db");
 
-// router.get("/Create", verifyToken, (req, res) => {      
+router.get("/Create",  (req, res) => {      
   
-//     const { content, postId,userId } = req.body;
-//     if (userId !== req.user.id) { 
-//         return res
-//          .status(403)
-//          .json({ message: "You do not have permission to create a comment on this post." });
-//     }
-//   const sql = `
-//     SELECT 
-//       comments.id,
-//       comments.user_id,
-//       comments.post_id,
-//       comments.comment_text,
-//       comments.created_at,
-//       comments.updated_at,
-//       COUNT(likes.id) AS total_likes
-//     FROM 
-//       comments
-//     LEFT JOIN 
-//       likes ON comments.id = likes.comment_id
-//     WHERE 
-//       comments.post_id = ?
-//     GROUP BY 
-//       comments.id
-//     ORDER BY 
-//       comments.created_at DESC`;
+    const { content, postId,userId } = req.body;
+    if (userId !== req.user.id) { 
+        return res
+         .status(403)
+         .json({ message: "You do not have permission to create a comment on this post." });
+    }
+  const sql = `
+    SELECT 
+      comments.id,
+      comments.user_id,
+      comments.post_id,
+      comments.comment_text,
+      comments.created_at,
+      comments.updated_at,
+      COUNT(likes.id) AS total_likes
+    FROM 
+      comments
+    LEFT JOIN 
+      likes ON comments.id = likes.comment_id
+    WHERE 
+      comments.post_id = ?
+    GROUP BY 
+      comments.id
+    ORDER BY 
+      comments.created_at DESC`;
 
-//   con.query(sql, [postId], (err, result) => {
-//     if (err) {
-//       return res.status(500).json({ error: err.message });
-//     }
-//     res.json(result);
-//   });
-// });
+  con.query(sql, [postId], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json(result);
+  });
+});
 
-// 2. Create a new comment
-// const express = require("express");
-// const router = express.Router();
-// const verifyToken = require("../Verify.user");
-// const con = require("../db");
+
 
 router.post("/CreateComments", verifyToken, (req, res) => {
   const { content, PostId, userId } = req.body;
@@ -74,7 +70,27 @@ router.post("/CreateComments", verifyToken, (req, res) => {
   });
 });
 
+router.get("/getAllPost/:PostId", (req, res) => {
+  try {
+    
+    const { PostId } = req.params;
+    
 
+    const sql =
+      "SELECT * FROM comments WHERE post_id = ? ORDER BY updated_at DESC";
+
+    con.query(sql, [PostId], (err, results) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      res.status(200).json(results)
+      
+    });
+  } catch (error) {
+    console.error("Error fetching post:", error);
+    return res.status(500).json({ error: "Failed to fetch post" });
+  }
+});
 
 // 3. Like a comment
 // router.post("/comments/:comment_id/like", (req, res) => {

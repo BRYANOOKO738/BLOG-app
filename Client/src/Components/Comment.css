@@ -1,0 +1,5 @@
+@media (min-width: 600px) {
+  .commt {
+    margin:20px 150px; /* Reduced margin for small screens */
+  }
+}
