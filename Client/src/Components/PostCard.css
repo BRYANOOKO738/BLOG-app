@@ -1,0 +1,38 @@
+.hover-card {
+  transition: all 0.3s ease;
+  border: none;
+  display: flex;
+}
+
+.hover-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+
+.hover-img {
+  transition: all 0.3s ease;
+}
+
+.hover-card:hover .hover-img {
+  opacity: 0.9;
+}
+
+.hover-title {
+  transition: color 0.3s ease;
+}
+
+.hover-title:hover {
+  color: #0d6efd !important; /* Bootstrap primary color */
+}
+
+.hover-btn {
+  transition: all 0.3s ease;
+  background: #0d6efd;
+  border: 2px solid #0d6efd;
+}
+
+.hover-btn:hover {
+  background: transparent;
+  color: #0d6efd;
+  border: 2px solid #0d6efd;
+}

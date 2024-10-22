@@ -1,21 +1,22 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import "./Coments.css"
+import "./Coments.css";
 import Comment from "../Comment";
+import PostCard from "../PostCard";
 
 const Comments = ({ PostId }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [comment, setComment] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [comments, setcomments] = useState([])
-  
-  
- const getAuthToken = () => {
-   return localStorage.getItem("access_token");
- };
-  // Handle form submission
+  const [comments, setcomments] = useState([]);
+  const [recentPost, setrecentPost] = useState(null);
+
+  const getAuthToken = () => {
+    return localStorage.getItem("access_token");
+  };
+
   const handleSubmit = async (e) => {
     const token = getAuthToken();
     e.preventDefault();
@@ -44,40 +45,60 @@ const Comments = ({ PostId }) => {
       setSuccessMessage("Comment Added successfully");
       setTimeout(() => setSuccessMessage(""), 3000);
       setcomments([data, ...comments]);
-      // Clear the comment input after submission
       setComment("");
     } else {
-      setErrorMessage(error.toString());
+      setErrorMessage(data.error || "An error occurred");
       setTimeout(() => setErrorMessage(""), 3000);
-    }  
-
-   
+    }
   };
+
   useEffect(() => {
-    const getComments = async () => { 
+    const getComments = async () => {
       try {
-         const res = await fetch(
-           `http://localhost:3000/routes/comment/getAllPost/${PostId}`,
-           {
-             method: "GET",
-             headers: {
-               "Content-Type": "application/json",
-             },
-           }
-         );
+        const res = await fetch(
+          `http://localhost:3000/routes/comment/getAllPost/${PostId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         if (res.ok) {
           const data = await res.json();
           setcomments(data);
         }
-        
       } catch (error) {
         console.error(error);
       }
-     
-    }
+    };
     getComments();
-  }, [PostId])
-  
+  }, [PostId]);
+
+  useEffect(() => {
+    try {
+      const fetchrecentPost = async () => {
+        const res = await fetch(
+          `http://localhost:3000/routes/Publish/getpost?limit=3`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (res.ok) {
+          const data = await res.json();
+          setrecentPost(data.posts);
+        }
+      };
+      fetchrecentPost();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  console.log(recentPost);
 
   return (
     <div className="" style={{ margin: "50px" }}>
@@ -132,7 +153,7 @@ const Comments = ({ PostId }) => {
                   required
                 />
                 <div className="absolute bottom-3 right-3 text-sm text-gray-500 dark:text-gray-400">
-                  {280 - comment.length} characters remaining
+                  {500 - comment.length} characters remaining
                 </div>
               </div>
             </div>
@@ -153,19 +174,30 @@ const Comments = ({ PostId }) => {
       ) : (
         <div>
           <div>
-            Comments 
+            Comments{" "}
             <span
               className="badge"
               style={{ backgroundColor: "blue", color: "white" }}
             >
               {comments.length}
             </span>
-            </div>
+          </div>
           {comments.map((comment) => (
             <Comment key={comment.id} comment={comment} />
-            ))}  
+          ))}
         </div>
       )}
+      <div className="">
+        <h3 className="text-center">Recent Articles</h3>
+        <div className="row">
+          {recentPost &&
+            recentPost.map((post) => (
+              <div className="col-12 col-md-6 col-lg-4" key={post.id}>
+                <PostCard post={post} />
+              </div>
+            ))}
+        </div>
+      </div>
     </div>
   );
 };
