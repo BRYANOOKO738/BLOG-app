@@ -92,35 +92,81 @@ router.get("/getAllPost/:PostId", (req, res) => {
   }
 });
 
-// 3. Like a comment
-// router.post("/comments/:comment_id/like", (req, res) => {
-//   const { user_id } = req.body; // Assuming the user ID is sent in the request body
-//     const commentId = req.params.comment_id;
-    
+//like coment
+router.post("/:comment_id/like", (req, res) => {
+ 
+  const { commentId, user_id } = req.params;   
+  console.log(req.params)
     
 
-//   // Check if the user has already liked the comment
-//   const checkSql = "SELECT * FROM likes WHERE user_id = ? AND comment_id = ?";
-//   con.query(checkSql, [user_id, commentId], (err, result) => {
-//     if (err) {
-//       return res.status(500).json({ error: err.message });
-//     }
-//     if (result.length > 0) {
-//       return res
-//         .status(400)
-//         .json({ message: "You have already liked this comment." });
-//     }
+  // Check if the user has already liked the comment
+  const checkSql =
+    "SELECT * FROM comment_likes WHERE user_id = ? AND comment_id = ?";
+  con.query(checkSql, [user_id, commentId], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    if (result.length > 0) {
+      return res
+        .status(400)
+        .json({ message: "You have already liked this comment." });
+    }
 
-//     // Insert like into the database
-//     const sql = "INSERT INTO likes (user_id, comment_id) VALUES (?, ?)";
-//     con.query(sql, [user_id, commentId], (err, result) => {
-//       if (err) {
-//         return res.status(500).json({ error: err.message });
-//       }
-//       res.json({ message: "Comment liked successfully!" });
-//     });
-//   });
-// });
+    // Insert like into the database
+    const sql = "INSERT INTO comment_likes (user_id, comment_id) VALUES (?, ?)";
+    con.query(sql, [user_id, commentId], (err, result) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      res.json({ message: "Comment liked successfully!" });
+    });
+  });
+});
+
+// Get like count for a comment
+router.get("/likeCount/:commentId", (req, res) => {
+  const { commentId } = req.params;
+
+  const sql = "SELECT COUNT(*) AS likeCount FROM comment_likes WHERE comment_id = ?";
+  con.query(sql, [commentId], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    const likeCount = result[0].likeCount;
+    res.json({ likeCount });
+  });
+});
+router.post("/unlikeComment/:userId/:commentId", (req, res) => {
+  const { userId, commentId } = req.params;
+  console.log(req.params);
+
+  const sql = "DELETE FROM comment_likes WHERE user_id = ? AND comment_id = ?";
+  con.query(sql, [userId, commentId], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ message: "Comment unliked!" });
+  });
+});
+// Check if a user has liked a comment
+router.get("/hasLiked/:userId/:commentId", (req, res) => {
+  const { userId, commentId } = req.params;
+  // console.log(req.params)
+
+  const sql = "SELECT * FROM comment_likes WHERE user_id = ? AND comment_id = ?";
+  con.query(sql, [userId, commentId], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+
+    if (result.length > 0) {
+      res.json({ liked: true });
+    } else {
+      res.json({ liked: false });
+    }
+  });
+});
+
 
 // 4. Unlike a comment
 // router.delete("/comments/:comment_id/unlike", (req, res) => {

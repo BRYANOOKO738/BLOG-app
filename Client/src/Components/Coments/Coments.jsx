@@ -10,7 +10,7 @@ const Comments = ({ PostId }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [comments, setcomments] = useState([])
-  console.log(comments)
+  
   
  const getAuthToken = () => {
    return localStorage.getItem("access_token");
