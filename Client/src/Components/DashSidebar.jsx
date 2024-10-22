@@ -89,6 +89,13 @@ const DashSidebar = () => {
             </Link>
           </li>
         ) : null}
+        {currentUser.isAdmin ? (
+          <li className="nav-item">
+            <Link to="/dashboard/?tab=comments" className="nav-link">
+              <i class="bi bi-chat-left-text"></i> Comments
+            </Link>
+          </li>
+        ) : null}
 
         <li className="nav-item">
           <Link className="nav-link" onClick={handleSignout}>

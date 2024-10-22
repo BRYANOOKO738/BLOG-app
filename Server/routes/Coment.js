@@ -91,6 +91,52 @@ router.get("/getAllPost/:PostId", (req, res) => {
     return res.status(500).json({ error: "Failed to fetch post" });
   }
 });
+router.get("/getAllComents", verifyToken, (req, res) => {
+  try {
+    if (!req.user.isAdmin) {
+      return res
+        .status(401)
+        .json({ message: "You do not have permission to view all comments." });
+    }
+
+    // SQL queries
+    const totalCommentsSql = "SELECT COUNT(*) AS totalComments FROM comments";
+    const lastMonthCommentsSql = `SELECT COUNT(*) AS totalLastMonthComments FROM comments WHERE updated_at >= DATE_SUB(NOW(), INTERVAL 1 MONTH)`;
+    const allCommentsSql = "SELECT * FROM comments";
+
+    // Query to get total comments
+    con.query(totalCommentsSql, (err, totalCommentsResult) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+
+      // Query to get total comments from last month
+      con.query(lastMonthCommentsSql, (err, lastMonthCommentsResult) => {
+        if (err) {
+          return res.status(500).json({ error: err.message });
+        }
+
+        // Query to get all comment details
+        con.query(allCommentsSql, (err, allCommentsResult) => {
+          if (err) {
+            return res.status(500).json({ error: err.message });
+          }
+
+          // Return results
+          res.status(200).json({
+            totalComments: totalCommentsResult[0].totalComments,
+            totalLastMonthComments:
+              lastMonthCommentsResult[0].totalLastMonthComments,
+            comments: allCommentsResult,
+          });
+        });
+      });
+    });
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    return res.status(500).json({ error: "Failed to fetch comments" });
+  }
+});
 
 //like coment
 router.post("/:comment_id/like", (req, res) => {
@@ -203,15 +249,32 @@ router.get("/hasLiked/:userId/:commentId", (req, res) => {
 // });
 
 // 6. Delete a comment
-// router.delete("/comments/:id", (req, res) => {
-//   const commentId = req.params.id;
-//   const sql = "DELETE FROM comments WHERE id = ?";
+router.delete("/comments/:id",verifyToken, (req, res) => {
+  
+  const { id } = req.params;
 
-//   con.query(sql, [commentId], (err, result) => {
-//     if (err) {
-//       return res.status(500).json({ error: err.message });
-//     }
-//     res.json({ message: "Comment deleted successfully!" });
-//   });
-// });
+  console.log("Logged-in user ID:", req.user.id);
+  console.log("Requested delete ID:", id);
+
+  // Convert id from string to integer for comparison
+  const userId = parseInt(id, 10);
+  const loggedInUserId = parseInt(req.user.id, 10);
+
+  // Check if the logged-in user is the account owner or an admin
+  if (loggedInUserId !== userId && !req.user.isAdmin) {
+    return res.status(403).json({
+      message:
+        "Unauthorized: You can only delete your own account or you must be an admin",
+    });
+  }
+
+  const sql = "DELETE FROM comments WHERE id = ?";
+
+  con.query(sql, [id], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ message: "Comment deleted successfully!" });
+  });
+});
  module.exports = router;
