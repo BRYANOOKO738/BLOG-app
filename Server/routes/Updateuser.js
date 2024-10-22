@@ -116,7 +116,7 @@ router.get("/getAllUsers", verifyToken, async (req, res) => {
       .status(401)
       .json({ message: "You do not have permission to view all users." });
   }
-
+ 
   try {
     // Pagination parameters
     const startIndex = parseInt(req.query.startIndex) || 0;

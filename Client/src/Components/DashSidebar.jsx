@@ -58,13 +58,23 @@ const DashSidebar = () => {
         width: "250px",
         height: "100%", // Full height on large screens
         overflowY: "auto",
+        height: "100%",
       }}
     >
-      <div className="sidebar-header text-center py-4">
+      <div className="sidebar-header text-center py-4 ">
         <h4>UNBOUND VOICES</h4>
       </div>
       <ul className="nav flex-column">
         <li className="nav-item">
+          {currentUser.isAdmin ? (
+            <li className="nav-item">
+              <Link to="/dashboard/?tab=dasboardAdmin" className="nav-link">
+                
+                <i class="bi bi-speedometer2 mx-1"></i>
+                Dashboard
+              </Link>
+            </li>
+          ) : null}
           <Link to="/dashboard/?tab=profile" className="nav-link">
             {/* label={user} */}
             <i className="bi bi-person"></i> Profile
