@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import React, { useState,useEffect } from "react";
+import { Link, Outlet,useLocation,useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../../redux/Theme/themeSlice";
 import { useParams } from "react-router-dom";
@@ -9,9 +9,20 @@ import {
 
 const Navbar = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
   const { theme } = useSelector((state) => state.theme);
   const { id } = useParams();
+  const [serchTerm, setserchTerm] = useState("")
+  useEffect(() => {
+    const urlparams = new URLSearchParams(location.search);
+    const searchTermFromUrl = urlparams.get("searchTerm");
+    if (searchTermFromUrl) {
+      setserchTerm(searchTermFromUrl);    }
+  }, [location.search])
+  console.log(serchTerm);
+  
 
   const [isExpanded, setIsExpanded] = useState(true);
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
@@ -45,7 +56,12 @@ const Navbar = () => {
       dispatch(signoutFailure(error.message));
     }
   };
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const urlparams = new URLSearchParams(location.search);
+    urlparams.set("searchTerm", serchTerm);
+    navigate(`?${urlparams.toString()}`);
+  }
   return (
     <div>
       <nav className="navbar bg-body-tertiary  navbar-expand-lg">
@@ -86,13 +102,16 @@ const Navbar = () => {
                 role="search"
                 className={`search-container d-flex ${
                   isExpanded ? "expanded" : ""
-                }`}
+                  }`}
+                onSubmit={handleSubmit}
               >
                 <input
                   className="form-control me-2"
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
+                  value={serchTerm}
+                  onChange={(e) => setserchTerm(e.target.value)}
                   style={{
                     display: isExpanded ? "block" : "none",
                     transition: "all 0.3s ease",
@@ -100,7 +119,7 @@ const Navbar = () => {
                 />
                 <i
                   className="bi bi-search"
-                  onClick={toggleSearchBar}
+                  onClick={handleSubmit}
                   style={{
                     cursor: "pointer",
                     fontSize: "1.5rem",

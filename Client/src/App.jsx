@@ -15,6 +15,7 @@ import Create_post from "./Pages/Create_post";
 import ISAdminPrivate from "./Components/iSAdminPrivate"; 
 import UpdatePost from "./Pages/UpdatePost";
 import Post from "./Pages/Post";
+import Search from "./Components/Search";
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Dashbord />} />
           <Route path="/register" element={<Signup />} />
+          <Route path="/search" element={<Search />} />
           <Route path="/Login" element={<Signin />} />
           <Route element={<Private />}>
             <Route path="/dashboard" element={<Dashbord />} />
