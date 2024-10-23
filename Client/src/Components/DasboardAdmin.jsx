@@ -351,12 +351,12 @@ const DasboardAdmin = ({ percentageChange = 12.5 }) => {
             </table>
           </div>
         </div>
-        
+
         <div className="rounded shadow col">
           <div className="justify-content-between d-flex gap-4">
             <h2>Recent Posts</h2>
             <Link
-              to="/dashboard/?tab=users"
+              to="/dashboard/?tab=post"
               className="btn btn-outline-warning text-center"
             >
               See All
@@ -374,14 +374,17 @@ const DasboardAdmin = ({ percentageChange = 12.5 }) => {
               {posts.slice(0, 10).map((post) => (
                 <tbody key={post.id}>
                   <tr>
-                    <td>
-                      <img
-                        src={post.image}
-                        alt={post.title}
-                        className="rounded"
-                        style={{ width: "10%" }}
-                      />
-                    </td>
+                    <Link to={`/post/${post.slug}`}>
+                      <td>
+                        <img
+                          src={post.image}
+                          alt={post.title}
+                          className="rounded"
+                          style={{ width: "10%" }}
+                        />
+                      </td>
+                    </Link>
+
                     <td>{post.title}</td>
                     <td>{post.category}</td>
                   </tr>
