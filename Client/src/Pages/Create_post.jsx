@@ -171,14 +171,16 @@ const Create_post = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, category: e.target.value })
                     }
-                    
                   >
                     <option value="" disabled selected>
                       Select the Category
                     </option>
-                    <option value="fitness">Fitness</option>
-                    <option value="beauty">Beauty</option>
-                    <option value="quality">Quality</option>
+                    <option value="Business">Business</option>
+                    <option value="Politics">Politics</option>
+                    <option value="Religion">Religion</option>
+                    <option value="Wealth">Wealth</option>
+                    <option value="Inteligence">Inteligence</option>
+                    <option value="Others">Others</option>
                   </select>
                 </div>
                 <div className="col-12">

@@ -93,11 +93,11 @@ const Post = () => {
           <hr />
           <div
             className="mx-auto p-3 text-center post-content"
-            dangerouslySetInnerHTML={{ __html: post && post.content }}
-          ></div>
+            dangerouslySetInnerHTML={{ __html: post?.content }}
+          />
         </div>
       )}
-      <div className="container mx-auto w-100" style={{maxWidth:"1120px"}}>
+      <div className="container mx-auto w-100" style={{ maxWidth: "1120px" }}>
         <CallToAction />
       </div>
       <div>

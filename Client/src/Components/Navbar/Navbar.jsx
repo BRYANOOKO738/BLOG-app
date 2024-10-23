@@ -60,7 +60,7 @@ const Navbar = () => {
     e.preventDefault();
     const urlparams = new URLSearchParams(location.search);
     urlparams.set("searchTerm", serchTerm);
-    navigate(`?${urlparams.toString()}`);
+    navigate(`search?${urlparams.toString()}`);
   }
   return (
     <div>
@@ -81,7 +81,7 @@ const Navbar = () => {
           </button>
           <div
             className="sidebar offcanvas offcanvas-start"
-            tabindex="-1"
+            tabIndex="-1"
             id="offcanvasNavbar"
             aria-labelledby="offcanvasNavbarLabel"
           >
