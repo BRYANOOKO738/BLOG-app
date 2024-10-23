@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import "./Table.css";
 import { Link } from "react-router-dom";
+import "./Table.css";
 
 const SimpleModal = ({ showModal, setShowModal, handleDelete }) => {
   return (
@@ -26,9 +26,6 @@ const SimpleModal = ({ showModal, setShowModal, handleDelete }) => {
               className="btn-close"
               onClick={() => setShowModal(false)}
             ></button>
-          </div>
-          <div className="d-flex justify-content-center text-secondary">
-            <i className="bi bi-exclamation-circle fs-3"></i>
           </div>
           <div className="modal-body text-danger">
             <strong>Are you sure you want to delete this post?</strong>
@@ -60,56 +57,55 @@ const Dashpost = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [showModal, setShowModal] = useState(false);
   const [postToDelete, setPostToDelete] = useState(null);
-  const [post, setPost] = useState([]);
-  const [show, setshow] = useState(true);
+  const [posts, setPosts] = useState([]); // Renamed from 'post' for clarity
+  const [showMore, setShowMore] = useState(true);
 
   useEffect(() => {
-    const fetchpost = async () => {
+    const fetchPosts = async () => {
       try {
         const res = await fetch(
-          `http://localhost:3000/routes/Publish/getpost?author_id=${currentUser.id}`
+          `http://localhost:3000/routes/Publish/getpost?limit=4?author_id=${currentUser.id}`
         );
         const data = await res.json();
         if (res.ok) {
-          setPost(data.posts);
-          if (data.posts.length < 6) {
-            setshow(false);
+          setPosts(data.posts);
+          // Check if there are fewer than 6 posts to hide the "Show More" button
+          if (data.posts.length < 5) {
+            setShowMore(true);
           }
         }
       } catch (error) {
         console.log(error);
       }
     };
+
     if (currentUser.isAdmin) {
-      fetchpost();
+      fetchPosts();
     }
   }, [currentUser.id]);
 
-  const { theme } = useSelector((state) => state.theme);
-
   const handleShow = async () => {
-    const startindex = post.length;
+    const startIndex = posts.length; // Use the length of the current posts array
     try {
       const res = await fetch(
-        `http://localhost:3000/routes/Publish/getpost?author_id=${currentUser.id}&startindex=${startindex}`
+        `http://localhost:3000/routes/Publish/getpost?startindex=${startIndex}?author_id=${
+          currentUser.id
+        }`
       );
       const data = await res.json();
-      if (res.ok) {
-        setPost([...post, ...data.posts]);
-        if (data.posts.length < 5) {
-          setshow(false);
-        }
+      if (data.posts && data.posts.length > 0) {
+        const updatedPosts = [...posts, ...data.posts];
+        setPosts(updatedPosts);
+        setShowMore(data.posts.length === 4);
+      } else {
+        setShowMore(false);
       }
     } catch (error) {
       console.error("Error fetching more posts:", error);
     }
   };
-  const getAuthToken = () => {
-    return localStorage.getItem("access_token");
-  };
 
   const handleDelete = async () => {
-    const token = getAuthToken();
     if (postToDelete) {
       try {
         const res = await fetch(
@@ -118,14 +114,16 @@ const Dashpost = () => {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
             },
           }
         );
         const data = await res.json();
         if (res.ok) {
-          setPost(post.filter((p) => p.id !== postToDelete));
-          console.log(data.message); // Log the success message
+          setPosts((prevPosts) =>
+            prevPosts.filter((p) => p.id !== postToDelete)
+          ); // Remove deleted post from state
+          console.log(data.message); // Log success message
         } else {
           console.error("Failed to delete post:", data.message);
         }
@@ -139,9 +137,10 @@ const Dashpost = () => {
 
   return (
     <div
-      className={`container ${theme === "dark" ? "bg-secondary" : "bg-white"}`}
+      className={`container ${
+        currentUser.isAdmin ? "bg-secondary" : "bg-white"
+      }`}
     >
-      {/* Table for large screens */}
       <div className="table-responsive d-none d-md-block">
         <table className="table table-striped table-hover">
           <thead className="table-dark">
@@ -155,7 +154,7 @@ const Dashpost = () => {
             </tr>
           </thead>
           <tbody>
-            {post.map((post) => (
+            {posts.map((post) => (
               <tr key={post.id}>
                 <td>{new Date(post.updated_at).toLocaleDateString()}</td>
                 <td>
@@ -204,7 +203,7 @@ const Dashpost = () => {
 
       {/* Stacked view for small screens */}
       <div className="d-md-none" style={{ position: "relative" }}>
-        {post.map((post) => (
+        {posts.map((post) => (
           <div key={post.id} className="card mb-3">
             <div className="card-body">
               <h5 className="card-title">
@@ -252,12 +251,9 @@ const Dashpost = () => {
         ))}
       </div>
 
-      {show && (
+      {showMore && (
         <div className="d-flex justify-content-center mb-3">
-          <button
-            onClick={handleShow}
-            className="btn btn-primary w-100 mb-3 logo"
-          >
+          <button onClick={handleShow} className="btn btn-primary w-100 mb-3">
             SHOW MORE ▼▼
           </button>
         </div>

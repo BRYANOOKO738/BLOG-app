@@ -1,0 +1,44 @@
+.social-icons i {
+  font-size: 24px; /* Adjust the size as needed */
+  margin-right: 10px;
+}
+
+.facebook {
+  color: #1877F2; /* Facebook blue */
+}
+
+.twitter {
+  color: #1DA1F2; /* Twitter blue */
+}
+
+.instagram {
+  color: #E4405F; /* Instagram gradient pink */
+}
+
+.linkedin {
+  color: #0077B5; /* LinkedIn blue */
+}
+.youtube {
+  color: #FF0000; /* YouTube red */
+}
+
+.tiktok {
+  color: #69C9D0; /* TikTok aqua */
+}
+    .newsletter-signup {
+      max-width: 400px; /* Small width */
+      margin: 20px auto; /* Centering the form */
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+      color: #1877F2;
+    }
+
+    .newsletter-signup input[type="email"] {
+      font-size: 14px; /* Slightly smaller input field */
+    }
+
+    .newsletter-signup button {
+      font-size: 14px; /* Slightly smaller button */
+    }

@@ -68,7 +68,7 @@ const Search = () => {
             setsidebarData({...sidebarData, category: category });
         }
     }
-  console.log(sidebarData);
+  
   const handleSubmit = (e) => { 
     fetchPost();
     e.preventDefault();

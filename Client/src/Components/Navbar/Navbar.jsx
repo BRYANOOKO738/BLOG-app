@@ -66,7 +66,10 @@ const Navbar = () => {
     <div>
       <nav className="navbar bg-body-tertiary  navbar-expand-lg">
         <div className="container-fluid">
-          <a className="navbar-brand border rounded-pill p-2 logo" href="#">
+          <a
+            className="navbar-brand border rounded-pill p-2 logo"
+            href="/about"
+          >
             UNBOUND VOICES
           </a>
           <button
@@ -86,7 +89,10 @@ const Navbar = () => {
             aria-labelledby="offcanvasNavbarLabel"
           >
             <div className="offcanvas-header border-bottom">
-              <a className="navbar-brand border rounded-pill p-2 logo" href="#">
+              <a
+                className="navbar-brand border rounded-pill p-2 logo"
+                href="/about"
+              >
                 UNBOUND VOICES
               </a>
               <button
@@ -96,165 +102,172 @@ const Navbar = () => {
                 aria-label="Close"
               ></button>
             </div>
-            <div className="offcanvas-body d justify-content-center p-2">
-              <form
-                id="SEARCH"
-                role="search"
-                className={`search-container d-flex ${
-                  isExpanded ? "expanded" : ""
+            <div className="offcanvas-body d justify-content-center p-2 ">
+              <div className="mx-auto d-none d-lg-flex">
+                <form
+                  id="SEARCH"
+                  role="search"
+                  className={`search-container d-flex ${
+                    isExpanded ? "expanded" : ""
                   }`}
-                onSubmit={handleSubmit}
-              >
-                <input
-                  className="form-control me-2"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                  value={serchTerm}
-                  onChange={(e) => setserchTerm(e.target.value)}
-                  style={{
-                    display: isExpanded ? "block" : "none",
-                    transition: "all 0.3s ease",
-                  }}
-                />
-                <i
-                  className="bi bi-search"
-                  onClick={handleSubmit}
-                  style={{
-                    cursor: "pointer",
-                    fontSize: "1.5rem",
-                    color: "#050819",
-                    marginLeft: "5px",
-                  }}
-                ></i>
-              </form>
-              <div>
-                <ul className="navbar-nav mx-auto mb-2 mb-lg-0 ">
-                  <li className="nav-item">
-                    <Link
-                      to="/"
-                      className="nav-link active"
-                      aria-current="page"
-                    >
-                      Home
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link active" aria-current="page" href="#">
-                      About
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link active" aria-current="page" href="#">
-                      Contact
-                    </a>
-                  </li>
-                  <div className=" d-lg-flex justify-content-between ms float-end lg">
-                    <li className="nav-item dropdown">
-                      <button
-                        className="btn btn-secondary dropdown-toggle p-0"
-                        type="button"
-                        id="dropdownThemeButton"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                        style={{ background: "transparent", border: "none" }}
-                      >
-                        {theme === "light" ? (
-                          <i
-                            className="bi bi-brightness-high-fill"
-                            style={{ fontSize: "1.5rem", color: "#050819" }}
-                          ></i>
-                        ) : (
-                          <i
-                            className="bi bi-moon-fill"
-                            style={{ fontSize: "1.5rem", color: "#050819" }}
-                          ></i>
-                        )}
-                      </button>
-                      <ul
-                        className="dropdown-menu"
-                        aria-labelledby="dropdownThemeButton"
-                        style={{ marginTop: "0.5rem" }}
-                      >
-                        <li
-                          className="dropdown-item"
-                          onClick={() => dispatch(toggleTheme())}
-                        >
-                          {theme === "light"
-                            ? "Switch to Dark Mode"
-                            : "Switch to Light Mode"}
-                        </li>
-                      </ul>
-                    </li>
-                    {currentUser ? (
-                      <div className="dropdown">
-                        <button
-                          className="btn btn-secondary dropdown-toggle p-0"
-                          type="button"
-                          id="dropdownAvatarButton"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                          style={{ background: "transparent", border: "none" }}
-                        >
-                          <img
-                            src={currentUser.image}
-                            alt="User Avatar"
-                            className="rounded-circle"
-                            style={{ width: "40px", height: "40px" }}
-                            onError={(e) => {
-                              e.target.src =
-                                "https://www.pngkit.com/png/full/281-2812821_user-account-management-logo-user-icon-png.png";
-                            }}
-                          />
-                        </button>
-                        <ul
-                          className="dropdown-menu m-3"
-                          aria-labelledby="dropdownAvatarButton"
-                        >
-                          <li>
-                            <div className="text-danger dropdown-item">
-                              @{currentUser.username}
-                            </div>
-                          </li>
-                          <li>
-                            <span className="dropdown-item text-truncate">
-                              {currentUser.email}
-                            </span>
-                          </li>
-                          <hr />
-                          <li>
-                            <Link
-                              to="/dashboard"
-                              className="text-decoration-none text-dark dropdown-item"
-                            >
-                              <div>Profile</div>
-                            </Link>
-                          </li>
-                          <li>
-                            <hr className="dropdown-divider" />
-                          </li>
-                          <li>
-                            <a
-                              className="dropdown-item"
-                              href="#/logout"
-                              onClick={handleSignout}
-                            >
-                              Logout
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    ) : (
+                  onSubmit={handleSubmit}
+                >
+                  <input
+                    className="form-control me-2"
+                    type="search"
+                    placeholder="Search"
+                    aria-label="Search"
+                    value={serchTerm}
+                    onChange={(e) => setserchTerm(e.target.value)}
+                    style={{
+                      display: isExpanded ? "block" : "none",
+                      transition: "all 0.3s ease",
+                    }}
+                  />
+                  <i
+                    className="bi bi-search"
+                    onClick={handleSubmit}
+                    style={{
+                      cursor: "pointer",
+                      fontSize: "1.5rem",
+                      color: "#050819",
+                      marginLeft: "5px",
+                    }}
+                  ></i>
+                </form>
+                <div>
+                  <ul className="navbar-nav mx-auto mb-2 mb-lg-0 ">
+                    <li className="nav-item">
                       <Link
-                        to="/Login"
-                        type="button"
-                        className="btn btn-success"
+                        to="/"
+                        className="nav-link active"
+                        aria-current="page"
                       >
-                        Sign in
+                        Home
                       </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        className="nav-link active"
+                        aria-current="page"
+                        to={"/about"}
+                      >
+                        About
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link
+                        className="nav-link active"
+                        aria-current="page"
+                        to={"/contact"}
+                      >
+                        Contact
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="ms-auto d-flex">
+                <li className="nav-item dropdown">
+                  <button
+                    className="btn btn-secondary dropdown-toggle p-0"
+                    type="button"
+                    id="dropdownThemeButton"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    style={{ background: "transparent", border: "none" }}
+                  >
+                    {theme === "light" ? (
+                      <i
+                        className="bi bi-brightness-high-fill"
+                        style={{ fontSize: "1.5rem", color: "#050819" }}
+                      ></i>
+                    ) : (
+                      <i
+                        className="bi bi-moon-fill"
+                        style={{ fontSize: "1.5rem", color: "#050819" }}
+                      ></i>
                     )}
+                  </button>
+                  <ul
+                    className="dropdown-menu"
+                    aria-labelledby="dropdownThemeButton"
+                    style={{ marginTop: "0.5rem" }}
+                  >
+                    <li
+                      className="dropdown-item"
+                      onClick={() => dispatch(toggleTheme())}
+                    >
+                      {theme === "light"
+                        ? "Switch to Dark Mode"
+                        : "Switch to Light Mode"}
+                    </li>
+                  </ul>
+                </li>
+                {currentUser ? (
+                  <div className="dropdown">
+                    <button
+                      className="btn btn-secondary dropdown-toggle p-0"
+                      type="button"
+                      id="dropdownAvatarButton"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                      style={{ background: "transparent", border: "none" }}
+                    >
+                      <img
+                        src={currentUser.image}
+                        alt="User Avatar"
+                        className="rounded-circle"
+                        style={{ width: "40px", height: "40px" }}
+                        onError={(e) => {
+                          e.target.src =
+                            "https://www.pngkit.com/png/full/281-2812821_user-account-management-logo-user-icon-png.png";
+                        }}
+                      />
+                    </button>
+                    <ul
+                      className="dropdown-menu dropdown-menu-end m-3"
+                      aria-labelledby="dropdownAvatarButton"
+                    >
+                      <li>
+                        <div className="text-danger dropdown-item">
+                          @{currentUser.username}
+                        </div>
+                      </li>
+                      <li>
+                        <span className="dropdown-item text-truncate">
+                          {currentUser.email}
+                        </span>
+                      </li>
+                      <hr />
+                      <li>
+                        <Link
+                          to="/dashboard/?tab=profile"
+                          className="text-decoration-none text-dark dropdown-item"
+                        >
+                          <div>Profile</div>
+                        </Link>
+                      </li>
+                      <li>
+                        <hr className="dropdown-divider" />
+                      </li>
+                      <li>
+                        <Link className="dropdown-item" onClick={handleSignout}>
+                          Logout
+                        </Link>
+                      </li>
+                    </ul>
                   </div>
-                </ul>
+                ) : (
+                  <Link
+                    to="/Login"
+                    type="button"
+                    className="btn btn-outline-primary"
+                  >
+                    Sign in
+                  </Link>
+                )}
               </div>
             </div>
           </div>

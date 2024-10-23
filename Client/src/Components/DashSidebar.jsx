@@ -58,7 +58,6 @@ const DashSidebar = () => {
         width: "250px",
         height: "100%", // Full height on large screens
         overflowY: "auto",
-        
       }}
     >
       <div className="sidebar-header text-center py-4 ">
@@ -66,10 +65,9 @@ const DashSidebar = () => {
       </div>
       <ul className="nav flex-column">
         <li className="nav-item">
-          {currentUser.isAdmin ? (
+          {currentUser.isOwner ? (
             <li className="nav-item">
               <Link to="/dashboard/?tab=dasboardAdmin" className="nav-link">
-                
                 <i class="bi bi-speedometer2 mx-1"></i>
                 Dashboard
               </Link>
@@ -78,8 +76,10 @@ const DashSidebar = () => {
           <Link to="/dashboard/?tab=profile" className="nav-link">
             {/* label={user} */}
             <i className="bi bi-person"></i> Profile
-            {currentUser.isAdmin ? (
-              <span className="badge bg-danger ms-2">Admin</span> // Red badge for Admin
+            {currentUser.isOwner ? (
+              <span className="badge bg-success ms-2">Owner</span> // Red badge for Admin
+            ) : currentUser.isAdmin ? (
+              <span className="badge bg-danger ms-2">Admin</span> // Green badge for Owner
             ) : (
               <span className="badge bg-primary ms-2">User</span> // Blue badge for User
             )}
@@ -92,7 +92,7 @@ const DashSidebar = () => {
             </Link>
           </li>
         ) : null}
-        {currentUser.isAdmin ? (
+        {currentUser.isOwner ? (
           <li className="nav-item">
             <Link to="/dashboard/?tab=users" className="nav-link">
               <i class="bi bi-people-fill"></i> Users

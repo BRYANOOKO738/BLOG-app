@@ -17,3 +17,17 @@
   color: #646cff;
   text-decoration: none;
 }
+/* App.css */
+html, body {
+  height: 100%; /* Ensure the body and HTML fill the viewport */
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure the root takes up the full viewport height */
+}
+
+.main {
+  flex: 1; /* This will take up the remaining space */
+}

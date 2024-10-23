@@ -71,20 +71,32 @@ router.post('/login', (req, res) => {
             if (match) {
                 // Generate JWT token
                 const token = jwt.sign(
-                    {
-                        id: user.id,
-                        email: user.email,
+                  {
+                    id: user.id,
+                    email: user.email,
                     username: user.username,
-                        isAdmin: user.isAdmin,
-                    },
-                    secretKey,
-                    { expiresIn: '1h' } // Token expires in 1 hour
+                    isAdmin: user.isAdmin,
+                    isOwner: user.isOwner,
+                  },
+                  secretKey,
+                  { expiresIn: "1h" } // Token expires in 1 hour
                 );
 
                 // Set the cookie and send response
-                return res.status(200).cookie('access_token', token, {
-                    httpOnly: true
-                }).json({ id: user.id,email: user.email,username: user.username,image: user.image,access_token: token,isAdmin: user.isAdmin});
+                return res
+                  .status(200)
+                  .cookie("access_token", token, {
+                    httpOnly: true,
+                  })
+                  .json({
+                    id: user.id,
+                    email: user.email,
+                    username: user.username,
+                    image: user.image,
+                    access_token: token,
+                    isAdmin: user.isAdmin,
+                    isOwner: user.isOwner,
+                  });
             } else {
                 return res.status(404).json({ error: 'Invalid credentials' });
             }
@@ -149,21 +161,29 @@ router.post('/google', async (req, res) => {
               email: user.email,
               username: user.username,
               image: user.image,
-              isAdmin:user.isAdmin
-
+              isAdmin: user.isAdmin,
+              isOwner: user.isOwner,
             },
             secretKey,
-            { expiresIn: '1h' }
+            { expiresIn: "1h" }
           );
 
           // Send response with token and user data
-          return res.status(201).cookie('access_token', token, {
-                    httpOnly: true
-                }).json({
-            message: 'User created successfully',
-            id: user.id,email: user.email,username: user.username,image: user.image,
-            token: token,isAdmin:user.isAdmin
-          });
+          return res
+            .status(201)
+            .cookie("access_token", token, {
+              httpOnly: true,
+            })
+            .json({
+              message: "User created successfully",
+              id: user.id,
+              email: user.email,
+              username: user.username,
+              image: user.image,
+              token: token,
+              isAdmin: user.isAdmin,
+              isOwner: user.isOwner,
+            });
         });
       } else {
         // Step 3: User already exists, update user information
@@ -198,13 +218,22 @@ router.post('/google', async (req, res) => {
             { expiresIn: '1h' }
           );
 
-          return res.status(200).cookie('access_token', token, {
-                    httpOnly: true
-                }).json({
-            message: 'User updated successfully',
-            token: token,
-            id: user.id,email: user.email,username: user.username,image: user.image,token: user.token,isAdmin: user.isAdmin
-          });
+          return res
+            .status(200)
+            .cookie("access_token", token, {
+              httpOnly: true,
+            })
+            .json({
+              message: "User updated successfully",
+              token: token,
+              id: user.id,
+              email: user.email,
+              username: user.username,
+              image: user.image,
+              token: user.token,
+              isAdmin: user.isAdmin,
+              isOwner: user.isOwner,
+            });
         });
       }
     });

@@ -1,107 +1,130 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import "./Footer.css";
 
 const Footer = () => {
-  const { theme } = useSelector((state) => state.theme);
-
   return (
-    <footer
+    <div
+      className="rounded mt-4 "
       style={{
-        color: "white",
-        position: "sticky",
-        bottom: 0,
-        width: "100%",
-        zIndex: 10,
+        backgroundColor: "#050819",
+        color: "whitesmoke",
+        marginBottom: "0px",
       }}
-      className={`sidebar ${
-        theme === "dark" ? "bg-dark text-white" : "bg-light text-dark"
-      }`}
     >
-      <div className="row">
-        <div className="col text-decoration-none">
-          <h3>About</h3>
+      <div className="mx-lg-5 mx-md-2 row justify-content-center">
+        <div className="col mt-2">
+          <div className="logo btn rounded-pill">Unbound Voices</div>
+          <p>
+            At Unbound Voices, we believe every story deserves to be heard and
+            every perspective valued. Founded in 2024, our platform is a digital
+            sanctuary for writers and storytellers from all backgrounds to share
+            their unique narratives.
+          </p>
+          <div className="row">
+            <div className="col">
+              <i class="bi bi-tiktok tiktok"></i>
+            </div>
+            <div className="col">
+              <i class="bi bi-youtube youtube"></i>
+            </div>
+            <div className="col">
+              <i class="bi bi-instagram instagram"></i>
+            </div>
+            <div className="col">
+              <i class="bi bi-facebook facebook"></i>
+            </div>
+          </div>
+        </div>
+        <div className="col mt-2 mx-3">
+          <h2>Contact Us</h2>
+
+          <p>
+            <span>
+              <i class="bi bi-geo-alt-fill fs-4"></i>
+            </span>
+            123 Main St, City, State, ZIP
+            <br />
+            <span>
+              <i class="bi bi-telephone-fill fs-4"></i>
+            </span>
+            (123) 456-7890
+            <br />
+            <span>
+              <i class="bi bi-envelope-at-fill fs-4"></i>
+            </span>
+            support@unboundvoices.org
+          </p>
+        </div>
+        <div className="col mt-2">
+          <h2>Quick links</h2>
           <ul>
             <li>
-              <a href="#" className="text-decoration-none">
-                Press
+              <a
+                href="#"
+                className="text-decoration-none"
+                style={{ color: "inherit" }}
+              >
+                Home
               </a>
             </li>
             <li>
-              <a href="#" className="text-decoration-none">
-                Careers
+              <a
+                href="#"
+                className="text-decoration-none"
+                style={{ color: "inherit" }}
+              >
+                About Us
               </a>
             </li>
             <li>
-              <a href="#" className="text-decoration-none">
-                Terms of Service
+              <a
+                href="#"
+                className="text-decoration-none"
+                style={{ color: "inherit" }}
+              >
+                Services
               </a>
             </li>
             <li>
-              <a href="#" className="text-decoration-none">
-                Privacy Policy
+              <a
+                href="#"
+                className="text-decoration-none"
+                style={{ color: "inherit" }}
+              >
+                Contact
               </a>
             </li>
           </ul>
         </div>
-        <div className="col">
-          <h3>Contact Us</h3>
-          <p>Email: contact@unboundvoices.com</p>
-          <p>Phone: +1 123-456-7890</p>
-          <p>Address: 123 Main St, Anytown, USA</p>
-        </div>
-        <div className="col">
-          <h3>Categories</h3>
-          <ul>
-            <li>
-              <a href="#" className="text-decoration-none">
-                Technology
-              </a>
-            </li>
-            <li>
-              <a href="#" className="text-decoration-none">
-                Business
-              </a>
-            </li>
-            <li>
-              <a href="#" className="text-decoration-none">
-                Sports
-              </a>
-            </li>
-            <li>
-              <a href="#" className="text-decoration-none">
-                World
-              </a>
-            </li>
-            <li>
-              <a href="#" className="text-decoration-none">
-                Entertainment
-              </a>
-            </li>
-          </ul>
+        <div className="col mt-2">
+          <div class="newsletter-signup">
+            <h5 class="text-center">Subscribe to our weekly Newsletter</h5>
+            <form>
+              <div class="mb-3">
+                <label for="email" class="form-label">
+                  Email address
+                </label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-warning w-100">
+                Subscribe
+              </button>
+            </form>
+          </div>
         </div>
       </div>
-      <div className="d-flex justify-content-between mx-3">
-        <a href="#">
-          <i className="bi bi-facebook"></i>
-        </a>
-        <a href="#">
-          <i className="bi bi-twitter-x"></i>
-        </a>
-        <a href="#">
-          <i className="bi bi-instagram"></i>
-        </a>
-        <a href="#">
-          <i className="bi bi-linkedin"></i>
-        </a>
-        <a href="#">
-          <i className="bi bi-youtube"></i>
-        </a>
-      </div>
-      <p className="text-center mt-2">
-        Copyright © {new Date().getFullYear()} Unbound voices. All rights
-        reserved.
+
+      <hr />
+      <p className="text-center">
+        &copy; {new Date().getFullYear()} Unbound Voices. All rights reserved.
       </p>
-    </footer>
+    </div>
   );
 };
 

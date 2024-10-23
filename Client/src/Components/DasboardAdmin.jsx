@@ -26,7 +26,7 @@ const DasboardAdmin = ({ percentageChange = 12.5 }) => {
       if (!token) return; // Exit if no token
       try {
         const res = await fetch(
-          `http://localhost:3000/routes/updateuser/getAllUsers?limit=5`,
+          `http://localhost:3000/routes/updateuser/getAllUsers?limit=3`,
           {
             method: "GET",
             headers: {
@@ -83,7 +83,7 @@ const DasboardAdmin = ({ percentageChange = 12.5 }) => {
       if (!token) return; // Exit if no token
       try {
         const res = await fetch(
-          `http://localhost:3000/routes/Publish/getpost?limit=5`,
+          `http://localhost:3000/routes/Publish/getpost?limit=1`,
           {
             method: "GET",
             headers: {
@@ -114,7 +114,7 @@ const DasboardAdmin = ({ percentageChange = 12.5 }) => {
   }, [currentUser]);
 
   return (
-    <div className="container-fluid px-4">
+    <div className="container-fluid px-4 mb-4">
       <div className="row g-4">
         {/* Users Card */}
         <div className="col-12 col-lg-4">

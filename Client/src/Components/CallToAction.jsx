@@ -9,12 +9,12 @@ const CallToAction = () => {
         <p>Stay up-to-date with our latest blog posts, news, and updates.</p>
         <button className="logo btn self-center d-grid">
           <a
-            href="your-link-2"
+            href="/more"
             target="_blank"
             rel="noopener noreferrer"
             className="text-decoration-none text-white"
           >
-            Button 2
+            Study More
           </a>
         </button>
       </div>

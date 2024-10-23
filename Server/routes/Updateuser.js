@@ -12,8 +12,8 @@ router.put('/update/:id',verifyToken,  async (req, res) => {
         const { id } = req.params;
     const { username, email, password, image } = req.body;
         
-    console.log('Logged-in user ID:', req.user.id);
-    console.log('Requested update ID:', id);
+    // console.log('Logged-in user ID:', req.user.id);
+    // console.log('Requested update ID:', id);
 
     // Convert id from string to integer for comparison, if necessary
     const userId = parseInt(id, 10);
