@@ -89,7 +89,7 @@ const Dashusers = () => {
         }
 
           const data = await res.json();
-          console.log(data);
+          
         setUsers(data.users);
         if (data.users.length < 6) {
           setShow(false);

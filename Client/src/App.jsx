@@ -20,7 +20,7 @@ import ContactForm from "./Pages/Contact";
 import ContactPage from "./Pages/Contact";
 import Notfound from "./Notfound";
 import Footer from "./Components/Footer/Footer";
-import './App.css';
+import "./App.css"
 import {  useSelector } from "react-redux";
 
 function App() {
@@ -50,6 +50,8 @@ function App() {
 const { currentUser, loading } = useSelector((state) => state.user);
   return (
     <>
+    
+    <div className="container1">
       <Routes>
         <Route path="/" element={<Navbar />}>
           <Route exact path="/" element={<Home />} />
@@ -70,6 +72,7 @@ const { currentUser, loading } = useSelector((state) => state.user);
         <Route path="/Login" element={<Signin />} />
         <Route path="*" element={<Notfound />} />
       </Routes>
+    </div>
       {!shouldHideNavbarFooter && <Footer />}
     </>
   );
