@@ -217,7 +217,7 @@ console.log("Form data before submitting:", formData);
                       setFormData({ ...formData, category: e.target.value })
                     }
                   >
-                    <option value="" disabled selected>
+                    <option value="" disabled defaultValue>
                       Select the Category
                     </option>
                     <option value="fitness">Fitness</option>
@@ -272,7 +272,6 @@ console.log("Form data before submitting:", formData);
                 )}
                 <div style={{ position: "relative", height: "230px" }}>
                   <label
-                    htmlFor="description"
                     className="form-label mt-3"
                     style={{
                       position: "absolute",

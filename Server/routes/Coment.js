@@ -214,6 +214,7 @@ router.get("/hasLiked/:userId/:commentId", (req, res) => {
 });
 
 
+
 // 4. Unlike a comment
 // router.delete("/comments/:comment_id/unlike", (req, res) => {
 //   const { user_id } = req.body;

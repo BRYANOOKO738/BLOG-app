@@ -22,6 +22,7 @@ import Notfound from "./Notfound";
 import Footer from "./Components/Footer/Footer";
 import "./App.css"
 import {  useSelector } from "react-redux";
+import DashSubscribers from "./Components/DashSubscribers";
 
 function App() {
   const location = useLocation();
@@ -40,7 +41,8 @@ function App() {
       "/dashboard",
       "/RegisterGroup",
       "/about",
-      "/contact"
+      "/contact",
+      "dashSubscribers",
     ].includes(location.pathname) &&
     !location.pathname.startsWith("/dashboard");
 
@@ -50,29 +52,29 @@ function App() {
 const { currentUser, loading } = useSelector((state) => state.user);
   return (
     <>
-    
-    <div className="container1">
-      <Routes>
-        <Route path="/" element={<Navbar />}>
-          <Route exact path="/" element={<Home />} />
-          <Route path="/post/:postSlug" element={<Post />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/search" element={<Search />} />
-          <Route element={<Private />}>
-            <Route path="/dashboard" element={<Dashbord />} />
-            <Route element={<ISAdminPrivate />}>
-              <Route path="/Create_post" element={<Create_post />} />
-              <Route path="/Update-post/:postid" element={<UpdatePost />} />
+      <div className="container1">
+        <Routes>
+          <Route path="/" element={<Navbar />}>
+            <Route exact path="/" element={<Home />} />
+            <Route path="/post/:postSlug" element={<Post />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/search" element={<Search />} />
+            <Route element={<Private />}>
+              <Route path="/dashboard" element={<Dashbord />} />
+              <Route element={<ISAdminPrivate />}>
+                <Route path="/Create_post" element={<Create_post />} />
+                <Route path="/Update-post/:postid" element={<UpdatePost />} />
+                <Route path="/dashSubscribers" element={<DashSubscribers />} />
+              </Route>
             </Route>
           </Route>
-        </Route>
-        
-        <Route path="/register" element={<Signup />} />
-        <Route path="/Login" element={<Signin />} />
-        <Route path="*" element={<Notfound />} />
-      </Routes>
-    </div>
+
+          <Route path="/register" element={<Signup />} />
+          <Route path="/Login" element={<Signin />} />
+          <Route path="*" element={<Notfound />} />
+        </Routes>
+      </div>
       {!shouldHideNavbarFooter && <Footer />}
     </>
   );

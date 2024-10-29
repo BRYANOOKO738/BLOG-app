@@ -106,6 +106,13 @@ const DashSidebar = () => {
             </Link>
           </li>
         ) : null}
+        {currentUser.isAdmin ? (
+          <li className="nav-item">
+            <Link to="/dashboard/?tab=dashSubscribers" className="nav-link">
+              <i className="bi bi-substack"></i> Subscribers
+            </Link>
+          </li>
+        ) : null}
 
         <li className="nav-item">
           <Link className="nav-link" onClick={handleSignout}>

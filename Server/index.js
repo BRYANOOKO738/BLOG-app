@@ -8,6 +8,7 @@ const updateuserRoute = require('./routes/Updateuser');
 const publishRoute=require('./routes/Createpost');
 const verifyToken = require('./Verify.user');
 const commentsRoute = require('./routes/Coment');
+const SubscribeRoute = require('./routes/Subscribe');
 
 
 const app = express();
@@ -20,6 +21,8 @@ app.use('/routes/Auth', userRoute)
 app.use('/routes/updateuser', updateuserRoute)
 app.use('/routes/Publish', publishRoute)
 app.use("/routes/comment", commentsRoute)
+app.use("/routes/Subscribe", SubscribeRoute)
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 })

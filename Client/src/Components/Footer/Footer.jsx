@@ -1,7 +1,38 @@
-import React from "react";
+import React,{useState} from "react";
 import "./Footer.css";
 
 const Footer = () => {
+   const [email, setEmail] = useState();
+
+   const handleSubmit = async (e) => {
+     e.preventDefault();
+
+     if (!email) {
+       alert("Please enter your email address.");
+       return;
+     }
+     
+     try {
+       const res = await fetch(
+         "http://localhost:3000/routes/Subscribe/Subscribe",
+         {
+           method: "POST",
+           headers: {
+             "Content-Type": "application/json",
+           },
+           body: JSON.stringify({ email }),
+         }
+       );
+       if (res.ok) {
+         alert("Thank you for subscribing!");
+         setEmail("");
+       } else {
+         alert("Failed to subscribe. Please try again later.");
+       }
+     } catch (error) {
+       alert("Failed to subscribe. Please try again later.");
+     }
+   };
   return (
     <div
       className="rounded mt-4 "
@@ -99,9 +130,9 @@ const Footer = () => {
         <div className="col mt-2">
           <div class="newsletter-signup">
             <h5 class="text-center">Subscribe to our weekly Newsletter</h5>
-            <form>
+            <form onSubmit={handleSubmit}>
               <div class="mb-3">
-                <label for="email" class="form-label">
+                <label for="email" className="form-label">
                   Email address
                 </label>
                 <input
@@ -110,6 +141,8 @@ const Footer = () => {
                   id="email"
                   placeholder="Enter your email"
                   required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <button type="submit" class="btn btn-warning w-100">
