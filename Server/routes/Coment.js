@@ -142,7 +142,7 @@ router.get("/getAllComents", verifyToken, (req, res) => {
 router.post("/:comment_id/like", (req, res) => {
  
   const { commentId, user_id } = req.params;   
-  console.log(req.params)
+ 
     
 
   // Check if the user has already liked the comment
@@ -184,7 +184,7 @@ router.get("/likeCount/:commentId", (req, res) => {
 });
 router.post("/unlikeComment/:userId/:commentId", (req, res) => {
   const { userId, commentId } = req.params;
-  console.log(req.params);
+  
 
   const sql = "DELETE FROM comment_likes WHERE user_id = ? AND comment_id = ?";
   con.query(sql, [userId, commentId], (err, result) => {
@@ -254,8 +254,7 @@ router.delete("/comments/:id",verifyToken, (req, res) => {
   
   const { id } = req.params;
 
-  console.log("Logged-in user ID:", req.user.id);
-  console.log("Requested delete ID:", id);
+  
 
   // Convert id from string to integer for comparison
   const userId = parseInt(id, 10);

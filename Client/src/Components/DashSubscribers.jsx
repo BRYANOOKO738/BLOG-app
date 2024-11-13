@@ -48,10 +48,10 @@ const DashSubscribers = () => {
       }
     };
 
-    if (currentUser.isAdmin) {
+    if (currentUser.isOwner) {
       fetchUsers();
     }
-  }, [currentUser.isAdmin]);
+  }, [currentUser.isOwner]);
   useEffect(() => {
     if (error) {
       const timer = setTimeout(() => {
@@ -63,7 +63,7 @@ const DashSubscribers = () => {
     }
   }, [error]);
   return (
-    <div className="container-fluid fixed-top p-0">
+    <div className="container  p-0">
       <div className="row m-0">
         <div className="col-12 p-0">
           {error && (
@@ -143,3 +143,4 @@ const DashSubscribers = () => {
 };
 
 export default DashSubscribers;
+

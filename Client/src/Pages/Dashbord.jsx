@@ -6,6 +6,7 @@ import Dashpost from '../Components/Dashpost'
 import Dashusers from '../Components/Dashusers'
 import DashComents from '../Components/DashComents'
 import DasboardAdmin from '../Components/DasboardAdmin'
+import DashSubscribers from '../Components/DashSubscribers'
 
 
 
@@ -38,6 +39,7 @@ const Dashbord = () => {
       {tab === "post" && <Dashpost />}
       {tab === "users" && <Dashusers />}
       {tab === "comments" && <DashComents />}
+      {tab === "dashSubscribers" && <DashSubscribers />}
       {tab === "dasboardAdmin" && <DasboardAdmin />}
     </div>
   );

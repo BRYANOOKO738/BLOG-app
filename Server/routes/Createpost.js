@@ -188,7 +188,7 @@ router.put("/updatepost/:postid/:id", verifyToken, (req, res) => {
   // Convert id from string to integer for comparison
   const userId = parseInt(id, 10);
   const postId = parseInt(postid, 10);
-  console.log(userId, postId);
+ 
 
   if (!req.user.isAdmin && req.user.id !== userId) {
     return res

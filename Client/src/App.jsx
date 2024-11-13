@@ -65,11 +65,10 @@ const { currentUser, loading } = useSelector((state) => state.user);
               <Route element={<ISAdminPrivate />}>
                 <Route path="/Create_post" element={<Create_post />} />
                 <Route path="/Update-post/:postid" element={<UpdatePost />} />
-                <Route path="/dashSubscribers" element={<DashSubscribers />} />
               </Route>
             </Route>
           </Route>
-
+          <Route path="/dashSubscribers" element={<DashSubscribers />} />
           <Route path="/register" element={<Signup />} />
           <Route path="/Login" element={<Signin />} />
           <Route path="*" element={<Notfound />} />

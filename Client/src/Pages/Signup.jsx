@@ -44,7 +44,7 @@ const Signup = () => {
     <div className="row" style={{ marginTop: "150px", height: "100%" }}>
       <div
         style={{ width: "100vw" }}
-        className="my-auto col justify-content-center"
+        className="my-auto col justify-content-center mx-3"
       >
         <Link
           className="navbar-brand border rounded-pill p-2 logo text-center d-flex align-items-center justify-content-center"

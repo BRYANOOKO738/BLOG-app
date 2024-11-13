@@ -7,7 +7,6 @@ const con = require("../db");
 router.post("/CreateComments", verifyToken, (req, res) => {
   const { content, postId, userId } = req.body;
 
-  console.log(req.body); // Log the request body for debugging
 
   // Validate input
   if (!content || !postId || !userId) {

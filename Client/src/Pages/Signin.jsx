@@ -68,7 +68,7 @@ const Signin = () => {
       <div className="row" style={{ marginTop: "150px", height: "100%" }}>
         <div
           style={{ width: "100vw" }}
-          className="my-auto col justify-content-center"
+          className="my-auto col justify-content-center mx-3"
         >
           <Link
             className="navbar-brand border rounded-pill p-2 logo text-center d-flex  align-items-center  justify-content-center"
@@ -81,7 +81,10 @@ const Signin = () => {
             and stay updated with the latest posts from your favorite authors.
           </p>
         </div>
-        <div style={{ width: "100vw", height: "100%" }} className="col">
+        <div
+          style={{ width: "100vw", height: "100%" }}
+          className="col d-flex justify-content-center"
+        >
           <form onSubmit={handleSubmit}>
             <div>
               <label className="form-label text-center justify-content-center">
@@ -124,7 +127,7 @@ const Signin = () => {
                 Don't have an account? Sign up
               </Link>
             </div>
-          </form>          
+          </form>
           {error && <p style={{ color: "red" }}>{error}</p>}
           {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
         </div>

@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const mysql = require('mysql2');
 const jwt = require("jsonwebtoken")
 
-const secretKey = 'PROCESS.env.JWT_SECRET';
+
 router.post('/register', (req, res) => {
   
     const { username, email, password } = req.body;
@@ -67,7 +67,7 @@ router.post('/login', (req, res) => {
         try {
             const user = result[0];
             const match = await bcrypt.compare(password, user.password);
-
+            const secretKey = process.env.JWT_SECRET;
             if (match) {
                 // Generate JWT token
                 const token = jwt.sign(
@@ -79,7 +79,7 @@ router.post('/login', (req, res) => {
                     isOwner: user.isOwner,
                   },
                   secretKey,
-                  { expiresIn: "1h" } // Token expires in 1 hour
+                  { expiresIn: "24h" } // Token expires in 1 hour
                 );
 
                 // Set the cookie and send response
@@ -153,7 +153,7 @@ router.post('/google', async (req, res) => {
             email: email,
             image: userPhotoURL
           };
-
+            const secretKey = process.env.JWT_SECRET;
           // Generate JWT token
           const token = jwt.sign(
             {
@@ -165,7 +165,7 @@ router.post('/google', async (req, res) => {
               isOwner: user.isOwner,
             },
             secretKey,
-            { expiresIn: "1h" }
+            { expiresIn: "24h" }
           );
 
           // Send response with token and user data
@@ -205,7 +205,7 @@ router.post('/google', async (req, res) => {
             email: email,
             image: userPhotoURL
           };
-
+         const secretKey = process.env.JWT_SECRET;
           // Generate JWT token
           const token = jwt.sign(
             {
@@ -215,7 +215,7 @@ router.post('/google', async (req, res) => {
               isAdmin: user.isAdmin,
             },
             secretKey,
-            { expiresIn: '1h' }
+            { expiresIn: '24h' }
           );
 
           return res

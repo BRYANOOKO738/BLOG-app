@@ -98,7 +98,7 @@ const Comments = ({ PostId }) => {
     }
   }, []);
 
-  console.log(recentPost);
+ 
 
   return (
     <div className="" style={{ margin: "50px" }}>

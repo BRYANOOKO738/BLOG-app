@@ -18,30 +18,28 @@ const verifyToken = (req, res, next) => {
   if (!token) {
     return res.status(403).send('No token provided.');
   }
+try {
+  const secretKey = process.env.JWT_SECRET;
+  const decodedToken = jwt.verify(token, secretKey);
 
-  // console.log(token);
-
-  // Use the same secret used when signing the token
-//   const secretKey = process.env.JWT_SECRET || '@OOKO738kk';
-
-  // Decode the token without verifying the signature
-  const decodedToken = jwt.decode(token);
-  // console.log(decodedToken);
-
-  // Check if the token is decoded properly and contains the id
-  if (!decodedToken || !decodedToken.id) {
-    return res.status(400).send('Invalid token.');
+  req.user = decodedToken;
+   next();
+} catch (error) {
+  if (error.name === "JsonWebTokenError") {
+    return res.status(401).json({ error: "Invalid token." });
+  } else if (error.name === "TokenExpiredError") {
+    return res.status(401).json({ error: "Token expired." });
+  } else {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "An error occurred while verifying the token." });
   }
-
-  // Initialize req.user if it's not already initialized
-//   req.user = req.user || {};
-
-  // Assign the decoded id to req.user.id
-    req.user = decodedToken;
-    // console.log(req.user);
-
-  // Proceed to the next middleware
-  next();
+  
+}
+  
+   
+ 
 };
 
 module.exports = verifyToken;
