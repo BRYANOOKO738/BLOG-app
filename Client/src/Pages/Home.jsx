@@ -34,7 +34,7 @@ const Home = () => {
             encouraged. Here, you can express your thoughts, share your
             opinions, and engage in open discussions without fear of censorship.
             We believe in fostering a respectful and inclusive community, where
-            every voice is heard and diverse perspectives are embraced.
+            every voice is heard and diverse perspectives are embraced. 
           </strong>
         </p>
         <Link to={"/"} className="text-decoration-none self-center fw-4">

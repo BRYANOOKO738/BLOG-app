@@ -21,7 +21,7 @@ const Signin = () => {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-    dispatch(signinStart()); // Corrected typo
+    dispatch(signinStart()); 
    const res = await fetch("http://localhost:3000/routes/Auth/login", {
      method: "POST",
      headers: {
@@ -59,7 +59,7 @@ const Signin = () => {
      .catch((error) => {
        setError(error.message);
        setSuccessMessage("");
-       dispatch(SigninFailure(error.message)); // Updated to send the correct error message
+       dispatch(SigninFailure(error.message)); 
      });
   };
 
